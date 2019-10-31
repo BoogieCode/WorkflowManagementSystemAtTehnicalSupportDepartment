@@ -48,10 +48,16 @@ namespace licenta.Models
 
     public class LoginViewModel
     {
+
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [DataType(DataType.Text)]
+        [Display(Name = "Company")]
+        public string Company { get; set; }
+
+        [Required]
+        [Display(Name = "User")]
+        [DataType(DataType.Text)]
+        public string User { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,10 +70,25 @@ namespace licenta.Models
 
     public class RegisterViewModel
     {
+
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Company")]
+        public string Company { get; set; }
+
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "User")]
+        public string User { get; set; }
+
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

@@ -49,6 +49,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -170,6 +172,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DatabaseConnection\Department.cs" />
+    <Compile Include="DatabaseConnection\Request.cs" />
+    <Compile Include="DatabaseConnection\RequestHistory.cs" />
+    <Compile Include="DatabaseConnection\sysdiagram.cs" />
+    <Compile Include="DatabaseConnection\TehnicalDepartmentDb.cs" />
+    <Compile Include="DatabaseConnection\User.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
