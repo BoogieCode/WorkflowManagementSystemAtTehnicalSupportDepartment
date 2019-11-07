@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using licenta.Models;
 using licenta.DatabaseConnection;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace licenta.Controllers
 {
@@ -23,7 +24,7 @@ namespace licenta.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -35,9 +36,9 @@ namespace licenta.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -133,7 +134,7 @@ namespace licenta.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -146,6 +147,35 @@ namespace licenta.Controllers
                     return View(model);
             }
         }
+
+
+        private void createRolesandUsers(string username)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var UserManager = new Microsoft.AspNet.Identity.UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+
+
+            // In Startup iam creating first Admin Role and creating a default Admin User    
+            if (!roleManager.RoleExists("Administrator"))
+            {
+
+                // first we create Admin rool   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Administrator";
+                roleManager.Create(role);
+
+
+
+            }
+            var result1 = UserManager.AddToRole(username, "Administrator");
+            int i = 32;
+        }
+    
+
+
+
 
         //
         // GET: /Account/Register
@@ -175,9 +205,10 @@ namespace licenta.Controllers
                             return View(model);
                         }
                         else
-                        { 
-                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        {
 
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            createRolesandUsers(user.Id);
                             User newUser = new User
                             {
                                 company = model.Company,
