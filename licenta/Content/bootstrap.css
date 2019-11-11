@@ -36,6 +36,16 @@ body.sidenav {
     margin-left: 15%; /* Same as the width of the sidebar */
     padding: 0px 10px;
 }
+
+
+
+.centerText {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -250px;
+}
   
 
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */

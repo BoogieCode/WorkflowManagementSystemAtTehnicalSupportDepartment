@@ -26,7 +26,6 @@ namespace licenta.DatabaseConnection
         [StringLength(50)]
         public string departmentAssigned { get; set; }
 
-        [StringLength(50)]
         public string employeeAssigned { get; set; }
 
         public string image { get; set; }

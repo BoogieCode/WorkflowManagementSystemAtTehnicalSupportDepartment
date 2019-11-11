@@ -25,29 +25,31 @@
     <div class="sidenav">
 
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-            </li>
-        </ul>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                <li>@Html.ActionLink("Users", "Index", "UsersManagement")</li>
-            </ul>
+        <ul class="list-group nav">
+                <li>
 
-        </div>
+                    @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                    <br />
+                    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                    <hr />
+                    <br />
+                </li>
+            
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li id="usersRegister">@Html.ActionLink("Users", "Index", "UsersManagement")</li>
+                    <li>@Html.ActionLink("Create Incident/Request", "Create", "IncidentRequest")</li>
+        </ul>
     </div>
+
 
 }
 else
 {
     <style>
         body {
-            margin:0;
+            margin: 0;
         }
     </style>
     <ul class="nav navbar-nav navbar-right">

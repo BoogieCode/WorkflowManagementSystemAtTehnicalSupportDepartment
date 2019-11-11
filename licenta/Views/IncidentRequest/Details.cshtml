@@ -1,0 +1,82 @@
+﻿@model licenta.DatabaseConnection.Request
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Request</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User.company)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.company)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.departmentAssigned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.departmentAssigned)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.employeeAssigned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.employeeAssigned)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.priority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.priority)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.requestId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

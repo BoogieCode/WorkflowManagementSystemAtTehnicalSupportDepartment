@@ -207,7 +207,7 @@ namespace licenta.Controllers
                         else
                         {
 
-                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                           // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                             createRolesandUsers(user.Id);
                             User newUser = new User
                             {
@@ -226,7 +226,7 @@ namespace licenta.Controllers
                             // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                             // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("sucessfullyRegistered", "Account");
                         }
                     }
                 }
@@ -468,6 +468,14 @@ namespace licenta.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult sucessfullyRegistered()
+        {
+            ViewBag.success = "You were registered sucessfully";
+
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -488,6 +496,9 @@ namespace licenta.Controllers
             base.Dispose(disposing);
         }
 
+        
+
+        
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";

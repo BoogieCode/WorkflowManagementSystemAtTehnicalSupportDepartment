@@ -1,4 +1,4 @@
-﻿@model IEnumerable<licenta.DatabaseConnection.User>
+﻿@model List<licenta.Models.CompanyUserViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,51 +12,38 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Department.name)
+USERNAME
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.company)
+EMAIL
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.type)
+TYPE
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.username)
+DEPARTMENT
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.email)
-        </th>
-        <th>
+
+
+        @*<th>
             @Html.DisplayNameFor(model => model.role)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Department.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.company)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.type)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.password)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.role)
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.department)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.userId }) |

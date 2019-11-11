@@ -71,13 +71,32 @@ namespace licenta.Controllers
         static string CompanyName;
         // GET: UsersManagement
         public ActionResult Index()
-        {
-
+        {           
             string Company = null;
+            List<CompanyUserViewModel> model = new List<CompanyUserViewModel>();
             Company = db.Users.FirstOrDefault(u => u.username == User.Identity.Name).company.ToString();
             CompanyName = Company;
             var users = db.Users.Include(u => u.Department).Where(u=>u.type!=0 && u.company==Company);
-            return View(users.ToList());
+            foreach (var user in users)
+            {
+                string depName = "-";
+                try
+                {
+                    depName = user.Department.name;
+                }catch(Exception e)
+                {
+                    
+                }
+                model.Add(new CompanyUserViewModel
+                {
+                    userId = user.userId,
+                    username = user.username,
+                    email = user.email,
+                    type = user.type == 1 ? "Employee" : "Customer",
+                    department = depName 
+                }) ;
+            }
+            return View(model);
         }
 
         // GET: UsersManagement/Details/5
@@ -126,6 +145,7 @@ namespace licenta.Controllers
             
             if (ModelState.IsValid)
             {
+               string RealCompanyName = db.Users.FirstOrDefault(u => u.username == User.Identity.Name).company.ToString();
 
                 var user1 = new ApplicationUser { UserName = model.user, Email = model.email };
                 var result = await UserManager.CreateAsync(user1, model.password);
@@ -133,14 +153,18 @@ namespace licenta.Controllers
                 {
                     User newUser = new User
                     {
-                        company = CompanyName,
+                        company = RealCompanyName,
                         username = model.user,
                         password = model.password,
                         email = model.email,
                         type = Int32.Parse(model.userTypeId),
-                        departmentId = Int32.Parse(model.departmentName)
+                        
 
                     };
+                    if (newUser.type==1)
+                    {
+                        newUser.departmentId = Int32.Parse(model.departmentName);
+                    }
                     db.Users.Add(newUser);
                     db.SaveChanges();
                     return RedirectToAction("Index");
