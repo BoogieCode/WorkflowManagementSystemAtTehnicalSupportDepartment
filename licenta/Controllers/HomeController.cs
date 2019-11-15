@@ -26,5 +26,6 @@ namespace licenta.Controllers
 
             return View();
         }
+
     }
 }

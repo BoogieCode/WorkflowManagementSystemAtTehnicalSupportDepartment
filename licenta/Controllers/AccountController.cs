@@ -83,27 +83,29 @@ namespace licenta.Controllers
                         return View(model);
                     }
 
-                }
 
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
-                var result = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
+
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    var result = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
+                    Session["Company"] = check.company;
                 switch (result)
-                {
-                    case SignInStatus.Success:
-                        return RedirectToLocal(returnUrl);
-                    case SignInStatus.LockedOut:
-                        return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                    case SignInStatus.Failure:
-                    default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
+                    {
+
+                        case SignInStatus.Success:
+                            return RedirectToLocal(returnUrl);
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                    }
                 }
-            }
-        }
+            } }
 
         //
         // GET: /Account/VerifyCode
@@ -170,7 +172,6 @@ namespace licenta.Controllers
 
             }
             var result1 = UserManager.AddToRole(username, "Administrator");
-            int i = 32;
         }
     
 
@@ -194,17 +195,21 @@ namespace licenta.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.User, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                { using (TehnicalDepartmentDb db = new TehnicalDepartmentDb())
+                {
+                    using (TehnicalDepartmentDb db = new TehnicalDepartmentDb())
                     {
                         User check = db.Users.FirstOrDefault(u => u.company == model.Company);
                         if (check != null)
                         {
-                            return View(model);
+                            return View(model); 
                         }
-                        else
+                     
+
+                var user = new ApplicationUser { UserName = model.User, Email = model.Email };
+                
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+              
                         {
 
                            // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -228,9 +233,11 @@ namespace licenta.Controllers
 
                             return RedirectToAction("sucessfullyRegistered", "Account");
                         }
+
+                        AddErrors(result);
                     }
+
                 }
-                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form

@@ -233,9 +233,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Constrains\UserTypes.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdministratorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncidentRequestController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\UsersManagementController.cs" />
     <Compile Include="DatabaseConnection\Department.cs" />
     <Compile Include="DatabaseConnection\Request.cs" />
@@ -257,6 +259,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IncidentRequestViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\SharedViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -328,6 +331,8 @@
     <Content Include="Views\IncidentRequest\Details.cshtml" />
     <Content Include="Views\IncidentRequest\Edit.cshtml" />
     <Content Include="Views\IncidentRequest\Index.cshtml" />
+    <Content Include="Views\Administrator\Index.cshtml" />
+    <Content Include="Views\Home\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

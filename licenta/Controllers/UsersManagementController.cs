@@ -71,12 +71,13 @@ namespace licenta.Controllers
         static string CompanyName;
         // GET: UsersManagement
         public ActionResult Index()
-        {           
-            string Company = null;
+        {         
+           // string Company = null;
             List<CompanyUserViewModel> model = new List<CompanyUserViewModel>();
-            Company = db.Users.FirstOrDefault(u => u.username == User.Identity.Name).company.ToString();
-            CompanyName = Company;
-            var users = db.Users.Include(u => u.Department).Where(u=>u.type!=0 && u.company==Company);
+            User admin = db.Users.Where(u => u.username == User.Identity.Name).First();
+            CompanyName = admin.company;
+            Session["Company"] = CompanyName;
+            var users = db.Users.Include(u => u.Department).Where(u=>u.type!=0 && u.company==CompanyName);
             foreach (var user in users)
             {
                 string depName = "-";
@@ -98,6 +99,8 @@ namespace licenta.Controllers
             }
             return View(model);
         }
+
+
 
         // GET: UsersManagement/Details/5
         public ActionResult Details(int? id)
