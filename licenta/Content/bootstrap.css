@@ -95,12 +95,14 @@ template {
   display: none;
 }
 a {
-  background-color: transparent;
+    background-color: transparent;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    color: #000 !important;
 }
-a:active,
-a:hover {
-  outline: 0;
-}
+    a:active,
+    a:hover {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
 abbr[title] {
   border-bottom: none;
   text-decoration: underline;

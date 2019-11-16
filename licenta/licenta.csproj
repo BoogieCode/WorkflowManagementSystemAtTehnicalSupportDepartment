@@ -259,6 +259,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IncidentRequestViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\myIncidentRequestViewModel.cs" />
     <Compile Include="Models\SharedViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -333,6 +334,7 @@
     <Content Include="Views\IncidentRequest\Index.cshtml" />
     <Content Include="Views\Administrator\Index.cshtml" />
     <Content Include="Views\Home\_Create.cshtml" />
+    <Content Include="Views\Administrator\_RequestIncidentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

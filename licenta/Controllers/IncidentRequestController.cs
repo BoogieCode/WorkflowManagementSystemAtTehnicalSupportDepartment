@@ -47,7 +47,7 @@ namespace licenta.Controllers
                 List<Department> departments = db.Departments.ToList();
                 foreach (var d in departments)
                 {
-                    model.departmentsList.Add(new SelectListItem { Text = d.name, Value = d.departmentId.ToString() });
+                    model.departmentsList.Add(new SelectListItem { Text = d.name, Value = d.name.ToString() });
 
                 }
 
@@ -85,7 +85,9 @@ namespace licenta.Controllers
                     };
                     db.Requests.Add(request);
                     await db.SaveChangesAsync();
-                    int newRequestId = db.Requests.FirstOrDefault(u => u.createdBy == CreatedById).requestId;
+                    List<Request> newRequestList = db.Requests.Where(u => u.createdBy == CreatedById).ToList();
+                    List<Request> newRequestListDescendingOrder = newRequestList.OrderByDescending(u=>u.requestId).ToList();
+                    int newRequestId = newRequestListDescendingOrder.First().requestId;
                     RequestHistory requestHistory = new RequestHistory
                     {
                         requestId= newRequestId,

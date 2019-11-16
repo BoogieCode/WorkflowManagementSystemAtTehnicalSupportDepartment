@@ -1,4 +1,5 @@
 ﻿using licenta.DatabaseConnection;
+using licenta.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,43 @@ namespace licenta.Controllers
             List<Request> requestsList = db.Requests.ToList();
             string company = db.Users.Where(m => m.username == User.Identity.Name).FirstOrDefault().company;
             List<User> companyUsers = db.Users.Where(m => m.company == company).ToList();
-            requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId&&l.company==company))
-                           .ToList();
+            requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId&&l.company==company)).ToList();
+            List<myIncidentRequestViewModel> myIncidentRequestViewModel = new List<myIncidentRequestViewModel>();
+            try
+            {
+            }
+            catch
+            {
+                return View();
+            }
+            string statusString;
+            foreach (var req in requestsList)
+            {
+                List<RequestHistory> s = new List<RequestHistory>();
+                s = db.RequestHistories.Where(m => m.requestId == req.requestId).ToList();
+                //var lasts = s.Last().status;
+                statusString = s.Last().status;
+                //switch (s.Last().status)
+                //{
+                //    case 1:
+                //        statusString=
+                //};
+                myIncidentRequestViewModel.Add(new myIncidentRequestViewModel
+                {
+                    Id=req.requestId,
+                    IncidentRequest = req.type == false ? "Incident" : "Request",
+                    Title=req.title,
+                    CreatedBy=db.Users.Where(m=>m.userId==req.createdBy).FirstOrDefault().username,
+                    DepartmentAssigned=req.departmentAssigned,
+                    Priority=req.priority==0?"Low":req.priority==1?"Medium":"High",
+                    Status=statusString
+
+            }) ;
+            }
             // var users=db.Requests.Where(m=>m.createdBy==companyUsers)
             //var requests = db.Requests.Where()
             // return View(await requests.ToListAsync());
-            return View(requestsList);
+            return View(myIncidentRequestViewModel);
         }
 
         // GET: Administrator/Details/5
@@ -97,6 +129,13 @@ namespace licenta.Controllers
             {
                 return View();
             }
+        }
+
+        [ChildActionOnly]
+        public ActionResult _RequestIncidentList()
+        {
+          
+            return PartialView("asd");
         }
     }
 }

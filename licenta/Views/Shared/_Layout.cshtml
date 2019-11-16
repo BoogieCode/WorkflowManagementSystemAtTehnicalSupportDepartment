@@ -60,8 +60,15 @@
         <li>@Html.ActionLink("Home", "Index", "Home")</li>
         <li>@Html.ActionLink("About", "About", "Home")</li>
         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        <li id="usersRegister">@Html.ActionLink("Users", "Index", "UsersManagement")</li>
         <li>@Html.ActionLink("Create Incident/Request", "Create", "IncidentRequest")</li>
+
+
+        @if (this.User.IsInRole("Administrator"))
+        {
+            <li id="usersRegister">@Html.ActionLink("Users", "Index", "UsersManagement")</li>
+            <li>@Html.ActionLink("Administrator", "Index", "Administrator")</li>
+        }
+
     </ul>
 </div>
 

@@ -1,0 +1,50 @@
+﻿@model List<licenta.Models.myIncidentRequestViewModel>
+
+<table class="table">
+    <tr>
+        <th>
+            TYPE
+        </th>
+        <th>
+            TITLE
+        </th>
+        <th>
+            CREATED BY
+        </th>
+        <th>
+            DEPARTMENT ASSIGNED
+        </th>
+        <th>
+            PRIORITY
+        </th>
+        <th>
+            STATUS
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncidentRequest)
+            </td>
+            <td>
+                <a href="asd">@Html.DisplayFor(modelItem => item.Title)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentAssigned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+
+        </tr>
+    }
+
+</table>
