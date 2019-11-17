@@ -335,6 +335,7 @@
     <Content Include="Views\Administrator\Index.cshtml" />
     <Content Include="Views\Home\_Create.cshtml" />
     <Content Include="Views\Administrator\_RequestIncidentList.cshtml" />
+    <Content Include="Views\Home\Unassigned.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
