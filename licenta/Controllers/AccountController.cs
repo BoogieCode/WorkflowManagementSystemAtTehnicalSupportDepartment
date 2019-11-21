@@ -90,10 +90,17 @@ namespace licenta.Controllers
                     // To enable password failures to trigger account lockout, change to shouldLockout: true
                     var result = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
                     Session["Company"] = check.company;
-                switch (result)
+
+                    HttpCookie myCookie = new HttpCookie("companyCookie");
+
+
+                    switch (result)
                     {
 
                         case SignInStatus.Success:
+                            myCookie.Value = check.company;
+                            myCookie.Expires = DateTime.Now.AddDays(7);
+                            Response.Cookies.Add(myCookie);
                             return RedirectToLocal(returnUrl);
                         case SignInStatus.LockedOut:
                             return View("Lockout");
@@ -464,6 +471,12 @@ namespace licenta.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            if (Request.Cookies["companyCookie"] != null)
+            {
+                var c = new HttpCookie("companyCookie");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
             return RedirectToAction("Index", "Home");
         }
 

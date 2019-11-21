@@ -94,11 +94,11 @@ audio:not([controls]) {
 template {
   display: none;
 }
-a {
+/*a {
     background-color: transparent;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
     color: #000 !important;
-}
+}*/
     a:active,
     a:hover {
         background-color: rgba(0, 0, 0, 0.5) !important;

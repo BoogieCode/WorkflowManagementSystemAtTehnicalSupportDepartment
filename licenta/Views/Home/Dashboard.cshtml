@@ -1,0 +1,78 @@
+﻿@model List<licenta.Models.myIncidentRequestViewModel>
+
+
+<table class="table">
+    <tr>
+        <th>
+            TYPE
+        </th>
+        <th>
+            TITLE
+        </th>
+        <th>
+            CREATED BY
+        </th>
+        <th>
+            DEPARTMENT ASSIGNED
+        </th>
+        <th>
+            PRIORITY
+        </th>
+        <th>
+            STATUS
+        </th>
+        <th> </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncidentRequest)
+            </td>
+            <td>
+                <a href="asd">@Html.DisplayFor(modelItem => item.Title)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentAssigned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <button></button>
+                @*@Html.ActionLink("Mark as done ", "Assigned")|
+                    @Html.ActionLink("Send", "Assigned")*@
+            </td>
+            <td>
+
+                <button type="button" class="btn-block">Send</button>
+                <div class="modal fade" id="myModal" role="dialog" data-url='@Url.Action("ModalPartialSendView","Home",new { id=item.Id})' ></div>
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.btn-block').click(function () {
+
+            var url = $('#myModal').data('url');
+            $.get(url, function (data) {
+
+                $("#myModal").html(data);
+                $("#myModal").modal('show');
+            });
+        });
+
+    });
+</script>

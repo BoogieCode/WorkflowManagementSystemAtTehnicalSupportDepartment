@@ -18,7 +18,7 @@ namespace licenta.Controllers
         public ActionResult Index()
         {
             List<Request> requestsList = db.Requests.ToList();
-            string company = db.Users.Where(m => m.username == User.Identity.Name).FirstOrDefault().company;
+            string company = Request.Cookies["companyCookie"].Value;
             List<User> companyUsers = db.Users.Where(m => m.company == company).ToList();
             requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId&&l.company==company)).ToList();
             List<myIncidentRequestViewModel> myIncidentRequestViewModel = new List<myIncidentRequestViewModel>();

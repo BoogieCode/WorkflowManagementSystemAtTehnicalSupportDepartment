@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using licenta.DatabaseConnection;
 using licenta.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,9 +20,6 @@ namespace licenta.Controllers
     [Authorize(Roles = "Administrator")]
     public class UsersManagementController : Controller
     {
-
-        //DE FACUT O CLASA CARE FACE ASTA 
-        //CODUL EXISTA SI IN ACCOUNT CONTROLLER
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -74,9 +72,9 @@ namespace licenta.Controllers
         {         
            // string Company = null;
             List<CompanyUserViewModel> model = new List<CompanyUserViewModel>();
-            User admin = db.Users.Where(u => u.username == User.Identity.Name).First();
-            CompanyName = admin.company;
-            Session["Company"] = CompanyName;
+            CompanyName = Request.Cookies["companyCookie"].Value;
+            User admin = db.Users.Where(u => u.username == User.Identity.Name&& u.company== CompanyName).FirstOrDefault();
+            //Session["Company"] = CompanyName;
             var users = db.Users.Include(u => u.Department).Where(u=>u.type!=0 && u.company==CompanyName);
             foreach (var user in users)
             {
@@ -117,6 +115,52 @@ namespace licenta.Controllers
             return View(user);
         }
 
+
+        private void createRolesandUsers(string username,string userType)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var UserManager = new Microsoft.AspNet.Identity.UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            
+            
+            if (!roleManager.RoleExists("Employee")&&userType=="1")
+            {
+
+                // first we create Admin rool   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Employee";
+                roleManager.Create(role);
+
+
+
+            }
+            if (!roleManager.RoleExists("Customer") && userType == "2")
+            {
+
+                // first we create Admin rool   
+                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                role.Name = "Customer";
+                roleManager.Create(role);
+
+
+
+            }
+            string s;
+            if (userType == "1")
+            {
+                s = "Employee";
+            }
+            else
+            {
+                s = "Customer";
+            }
+            var result1 = UserManager.AddToRole(username, s);
+        }
+
+
+
+
         // GET: UsersManagement/Create
         public ActionResult Create()
         {
@@ -148,12 +192,16 @@ namespace licenta.Controllers
             
             if (ModelState.IsValid)
             {
-               string RealCompanyName = db.Users.FirstOrDefault(u => u.username == User.Identity.Name).company.ToString();
+                string RealCompanyName = Request.Cookies["companyCookie"].Value;
 
                 var user1 = new ApplicationUser { UserName = model.user, Email = model.email };
                 var result = await UserManager.CreateAsync(user1, model.password);
                 if (result.Succeeded)
                 {
+                    createRolesandUsers(user1.Id,model.userTypeId);
+
+
+
                     User newUser = new User
                     {
                         company = RealCompanyName,
@@ -173,7 +221,7 @@ namespace licenta.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            return View();
+            return Content("failed");
         }
 
         // GET: UsersManagement/Edit/5
