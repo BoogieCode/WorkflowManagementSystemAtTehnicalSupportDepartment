@@ -1,0 +1,47 @@
+﻿@model licenta.Models.HistoryRequestViewModel
+@{
+    ViewBag.Title = "History";
+}
+
+<h6>History</h6>
+<p>@Model.type</p>
+<h6>Title</h6>
+<p>@Model.title</p>
+<h6>Description</h6>
+<p>@Model.description</p>
+<h6>Priority</h6>
+<hr />
+<p>@Model.priority</p>
+<table class="table">
+    <tr>
+        <th>from</th>
+        <th>to</th>
+        <th>data</th>
+        <th>status</th>
+    </tr>
+    @{ foreach (var req in Model.histories)
+        {
+            <tr>
+                <td>
+                    @req.from
+                </td>
+                <td>
+                    @req.to
+                </td>
+                <td>
+                    @req.data
+                </td>
+                <td>
+                    @req.status
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @req.message
+                    <hr />
+                </td>                             
+            </tr>
+        }
+    }
+
+</table>

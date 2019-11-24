@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.IncidentRequest)
             </td>
             <td>
-                <a href="asd">@Html.DisplayFor(modelItem => item.Title)</a>
+                <a href="~/Home/History?id=@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
@@ -50,9 +50,11 @@
                     @Html.ActionLink("Send", "Assigned")*@
             </td>
             <td>
-
-                <button type="button" class="btn-block">Send</button>
-                <div class="modal fade" id="myModal" role="dialog" data-url='@Url.Action("ModalPartialSendView","Home",new { id=item.Id})' ></div>
+                @using (Html.BeginForm("ModalPartialSendView", "Home", new { enctype = "multipart/form-data" })) { 
+                    <button type="button" class="btn-block"  onclick="myFunction(@item.Id)" id="@item.Id">@item.Id</button>
+                     int x = item.Id;
+                    <div class="modal fade" id="myModal" role="dialog" data-url='@Url.Action("ModalPartialSendView", "Home")'></div>
+                }
             </td>
         </tr>
     }
@@ -62,17 +64,16 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function () {
+   
+        function myFunction(x) {
 
-        $('.btn-block').click(function () {
-
-            var url = $('#myModal').data('url');
+            var urlValue = $('#myModal').data('url') + "?userid=" + x;
+            var url = urlValue;
+            debugger;
             $.get(url, function (data) {
-
                 $("#myModal").html(data);
                 $("#myModal").modal('show');
             });
-        });
-
-    });
+        }
+   
 </script>

@@ -256,6 +256,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CompanyUsersRegisterViewModel.cs" />
     <Compile Include="Models\CompanyUserViewModel.cs" />
+    <Compile Include="Models\HistoryRequestModel.cs" />
+    <Compile Include="Models\HistoryRequestViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IncidentRequestViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -339,6 +341,7 @@
     <Content Include="Views\Home\Unassigned.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\ModalPartialSendView.cshtml" />
+    <Content Include="Views\Home\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

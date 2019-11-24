@@ -1,32 +1,52 @@
-﻿<div style=" position:relative;
+﻿@model licenta.Models.SendIncidentRequestViewModel
+    <div style="position:relative;
   top: 30%;
   left: 30%;
  ">
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModal-label">Bootstrap Dialog</h4>
-                    <div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <input type="text" placeholder="enter name" class="form-control" id="text" name="text" />
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModal-label">Bootstrap Dialog</h4>
+                            <div>
+
+                                <div class="modal-body">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    @Html.HiddenFor(x => x.ID, Model.ID);
+
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.Category, Model.departmentsList, "Select department to send", new { @class = "form-control" })
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(m => m.NeedsApproval, Model.Approval, "Select department to send", new { @class = "form-control" })
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Send" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" placeholder="enter name id" class="form-control" id="text" name="text" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" placeholder="adress" class="form-control" id="text" name="text" />
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" id="btnOK" onclick="">OK</button>
-                            <button class="btn btn-default" data-dismiss="modal" id="btnCancel">Cancel</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>}
     </div>
-</div>
