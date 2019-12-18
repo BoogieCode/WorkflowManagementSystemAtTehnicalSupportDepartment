@@ -10,38 +10,58 @@
 <h6>Description</h6>
 <p>@Model.description</p>
 <h6>Priority</h6>
-<hr />
 <p>@Model.priority</p>
-<table class="table">
-    <tr>
-        <th>from</th>
-        <th>to</th>
-        <th>data</th>
-        <th>status</th>
-    </tr>
-    @{ foreach (var req in Model.histories)
-        {
-            <tr>
-                <td>
-                    @req.from
-                </td>
-                <td>
-                    @req.to
-                </td>
-                <td>
-                    @req.data
-                </td>
-                <td>
-                    @req.status
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @req.message
-                    <hr />
-                </td>                             
-            </tr>
+<br />
+<div>
+    <style>
+        
+        table, th, td {
+            border: 1px solid black;
         }
-    }
+    </style>
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">from</th>
+            <th>to</th>
+            <th>data</th>
+            <th>status</th>
+            <th>send back to</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ foreach (var req in Model.histories)
+            {
+                <tr>
+                    <td>
+                        @req.from
+                    </td>
+                    <td>
+                        @req.to
+                    </td>
+                    <td>
+                        @req.data
+                    </td>
+                    <td>
+                        @req.status
+                    </td>
+                    <td>
+                        @req.approvaltype
+                    </td>
+                  
+                </tr>
+                <tr>
+                    <th>MESSAGE</th>
+                    <td>
+
+                        @req.message
+                        <hr />
+                    </td>
+                </tr>
+               
+            }
+        }
+    </tbody>
 
 </table>
+    </div>

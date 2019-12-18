@@ -1,6 +1,15 @@
 ﻿
 @model List<licenta.Models.myIncidentRequestViewModel>
 
+<h1>Unassigned</h1>
+<p>All incidents or requests available to assign</p>
+
+@if (Model.Count == 0)
+{<br />
+    <p style="color:red">There is no incident or request available for assign</p>
+}
+else
+{
 <table class="table">
     <tr>
         <th>
@@ -31,7 +40,7 @@
         @Html.DisplayFor(modelItem => item.IncidentRequest)
     </td>
     <td>
-        <a href="asd">@Html.DisplayFor(modelItem => item.Title)</a>
+        <a href="~/Home/History?id=@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.CreatedBy)
@@ -52,3 +61,4 @@
     }
 
 </table>
+}

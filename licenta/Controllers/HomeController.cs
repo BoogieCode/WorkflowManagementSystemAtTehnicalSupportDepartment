@@ -32,6 +32,16 @@ namespace licenta.Controllers
             return View();
         }
         [Authorize(Roles = "Administrator,Employee")]
+
+
+        [AllowAnonymous]
+        public ActionResult LoginPartial(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+
         public ActionResult Unassigned()
         {
             List<myIncidentRequestViewModel> models = new List<myIncidentRequestViewModel>();
@@ -80,7 +90,7 @@ namespace licenta.Controllers
                 reqHistory.status = "In Progress";
                 db.SaveChanges();
 
-                return RedirectToAction("Contact");
+                return RedirectToAction("Dashboard");
 
             }
             catch
@@ -155,17 +165,47 @@ namespace licenta.Controllers
         [HttpGet]
         public ActionResult ModalPartialSendView(int? userid)
         {
-            //WHY YOU DON T GET THE REAL VALUE
+
+           List<RequestHistory> request = db.RequestHistories.Where(m => m.requestId == userid).ToList();
+            request = request.OrderByDescending(d => d.data).ToList();
+
+            string mode = request.First().approval;
+
             SendIncidentRequestViewModel model = new SendIncidentRequestViewModel();
             if (userid != null)
                 model.ID = Int32.Parse(userid.ToString());
             List<Department> departments = db.Departments.ToList();
-            foreach (var d in departments)
+            if (mode != "0" && mode !=null)
             {
-                model.departmentsList.Add(new SelectListItem { Text = d.name, Value = d.name.ToString() });
+                if (mode == "1")
+                {
+                    model.modalType = 1;
+                }
+                else
+                {
+                    string to = mode;
+                    ViewBag.to = to;
 
+                    model.modalType = 2;
+                }
+                foreach (var d in departments)
+                {
+                    if (d.name == request.First().from)
+                    {
+                        model.departmentsList.Add(new SelectListItem { Text = d.name, Value = d.name.ToString() });
+                        break;
+                    }
+                }
             }
+            else
+            {
+                model.modalType = 0;
+                foreach (var d in departments)
+                {
+                    model.departmentsList.Add(new SelectListItem { Text = d.name, Value = d.name.ToString() });
 
+                }
+            }
             return PartialView(model);
 
         }
@@ -176,30 +216,53 @@ namespace licenta.Controllers
             RequestHistory requestHistory = db.RequestHistories.Where(m => m.requestId == model.ID).FirstOrDefault();
             Request request = db.Requests.FirstOrDefault(m => m.requestId == requestHistory.requestId);
 
-            request.employeeAssigned = null;
-            request.departmentAssigned = model.Category;
-            db.SaveChanges();
-
+            //string s = ViewBag.to;
 
             string statusState;
+            string approvalMessage="0";
+
             if (model.NeedsApproval == "1")
             {
                 statusState = "Waiting for approval";
+                if (model.ApprovalType == "0")
+                {
+                    approvalMessage = "1";
+                }
+                else
+                {
+                    approvalMessage = User.Identity.Name;
+                }
             }
             else
             {
+              
+                statusState = "Pending";
+            }
+
+
+            string dep = request.departmentAssigned;
+            request.departmentAssigned = model.Category;
+            if (model.NeedsApproval != null && model.NeedsApproval !="0"&& model.NeedsApproval !="1") {
+                request.employeeAssigned = model.NeedsApproval;
                 statusState = "In Progress";
             }
+            else
+            {
+                request.employeeAssigned = null;
+            }
+
+            db.SaveChanges();
 
             RequestHistory newrequestHistory = new RequestHistory
             {
                 requestId = model.ID,
-                from = requestHistory.to,
+                from = dep,
                 to = model.Category,
                 data = DateTime.Now,
                 message = model.Message,
-                approval = model.NeedsApproval.ToString(),
+                approval = approvalMessage,
                 status = statusState
+                
 
             };
 
@@ -230,30 +293,50 @@ namespace licenta.Controllers
                 model.type = "Request";
 
             model.description = request.description;
-
-            switch (model.priority)
+            
+            switch (request.priority)
             {
-                case "0": model.priority = "Low";
+                case 0: model.priority = "Low";
                     break;
-                case "1":
+                case 1:
                     model.priority = "Medium";
                     break;
-                case "2":
+                case 2:
                     model.priority = "High";
                     break;
 
             }
 
-            foreach(var req in requestHistory)
+         
+            
+
+            foreach (var req in requestHistory)
             {
+                string sendback;
+                if (req.approval == "1")
+                {
+                    sendback = "Send back to department";
+                }
+                else if (req.approval == "0" || req.approval == null)
+                {
+                    sendback = "-";
+                }
+                else
+                {
+                    sendback = "Send back to " + req.approval;
+                }
+
+
                 model.histories.Add(new HistoryRequestModel
                 {
+                     
                     from = req.from,
                     to = req.to,
-                    status = req.status,
                     data = req.data,
-                    message=req.message
-
+                    message=req.message,
+                    //status = req.status,
+                    status = req.status,
+                    approvaltype = sendback
                 }); 
             }
 

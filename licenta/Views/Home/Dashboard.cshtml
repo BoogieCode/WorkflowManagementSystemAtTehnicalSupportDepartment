@@ -1,6 +1,13 @@
 ﻿@model List<licenta.Models.myIncidentRequestViewModel>
 
-
+<h1>DASHBOARD</h1>
+<p>All requests or incidents assigned to you</p>
+@if (Model.Count == 0)
+{<br />
+    <p style="color:red">There is no incident or request for you right now</p>
+}
+else
+{
 <table class="table">
     <tr>
         <th>
@@ -45,21 +52,20 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <button></button>
-                @*@Html.ActionLink("Mark as done ", "Assigned")|
-                    @Html.ActionLink("Send", "Assigned")*@
+                <button class="btn-primary">Mark as done</button>
             </td>
             <td>
-                @using (Html.BeginForm("ModalPartialSendView", "Home", new { enctype = "multipart/form-data" })) { 
-                    <button type="button" class="btn-block"  onclick="myFunction(@item.Id)" id="@item.Id">@item.Id</button>
-                     int x = item.Id;
+                @using (Html.BeginForm("ModalPartialSendView", "Home", new { enctype = "multipart/form-data" }))
+                {
+                    <button type="button" class="btn-block btn-primary"  onclick="myFunction(@item.Id)" id="@item.Id">Send</button>
+                    int x = item.Id;
                     <div class="modal fade" id="myModal" role="dialog" data-url='@Url.Action("ModalPartialSendView", "Home")'></div>
                 }
             </td>
         </tr>
     }
 
-</table>
+</table>}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 

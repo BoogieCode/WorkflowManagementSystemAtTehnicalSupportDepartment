@@ -7,134 +7,41 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @*@<link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">*@
 
+
+    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>*@
+
+
+
+    <style>
+        .sidenav a {
+            font-family: 'Francois One', sans-serif;
+            color: aliceblue;
+        }
+    </style>
 </head>
 <body>
-    @if (Request.IsAuthenticated)
-    {
-        <style>
-            body {
-                margin-left: 15%;
-            }
-        </style>
 
-        @*using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-            {
-                @Html.AntiForgeryToken()
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                    </li>
-                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                </ul>
-            }*@
+    @Html.Partial("_LeftNavbar")
 
 
 
-
-        <div class="sidenav">
-
-
-
-
-            <ul class="list-group nav">
-                <li><p style="color:blue">Company @Request.Cookies["companyCookie"].Value</p></li>
-
-                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
-                {
-                    <li>
-                        @Html.ActionLink("Hello " + User.Identity.Name + "! \n", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-
-                        <br />
-                    </li>
-
-                    @Html.AntiForgeryToken()
-
-                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                }
-
-
-                @if (this.User.IsInRole("Employee"))
-                {
-                    <li>
-                        <hr />
-                    </li>
-                    <li>@Html.ActionLink("Dashboard", "Dashboard", "Home")</li>
-                    <li>@Html.ActionLink("Unassigned", "Unassigned", "Home")</li>
-
-                }
-                @if (this.User.IsInRole("Administrator"))
-                {
-                    <li>
-                        <hr />
-                    </li>
-                    <li id="usersRegister">@Html.ActionLink("Users", "Index", "UsersManagement")</li>
-                    <li>@Html.ActionLink("Administrator", "Index", "Administrator")</li>
-                }
-                <li>
-                    <hr />
-                </li>
-                <li>@Html.ActionLink("My Incidents/Requests", "Index", "myIncidentsRequests")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                <li>@Html.ActionLink("Create Incident/Request", "Create", "IncidentRequest")</li>
-
-
-
-
-            </ul>
-        </div>
-
-
-    }
-    else
-    {
-        <style>
-            body {
-                margin: 0;
-            }
-        </style>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        <li>@Html.ActionLink("Users", "Index", "UsersManagement")</li>
-                        <li>@Html.ActionLink("Create Incident/Request", "Create", "IncidentRequest")</li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-    }
- 
-
-    <div class="container body-content">
+    <div class="container body-content" id="renderbody">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+       
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
-

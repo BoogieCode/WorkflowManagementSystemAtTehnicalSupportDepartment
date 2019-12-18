@@ -4,11 +4,27 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Users</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<table>
+    <tr>
+        <th>
+            @Html.ActionLink("All(5)", "Create", null, new { @style ="color:black" })
+        </th>
+        <th>
+          |  @Html.ActionLink("Employees(3)", "Create")
+        </th>
+        <th>
+          |  @Html.ActionLink("Customers(2)", "Create")
+        </th>
+      
+    </tr>
+</table>
+
 <table class="table">
     <tr>
         <th>

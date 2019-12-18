@@ -1,46 +1,65 @@
 ﻿@model licenta.Models.SendIncidentRequestViewModel
-    <div style="position:relative;
+
+
+
+<div style="position:relative;
   top: 30%;
   left: 30%;
  ">
 
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModal-label">Bootstrap Dialog</h4>
-                            <div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModal-label">Send</h4>
+                        <div>
 
-                                <div class="modal-body">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="modal-body">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                    @Html.HiddenFor(x => x.ID, Model.ID);
+                                @Html.HiddenFor(x => x.ID, Model.ID)
+                                <p><b>Approval request</b></p>
+                                <div class="form-group">
+                                    @Html.DropDownListFor(m => m.Category, Model.departmentsList, new { @class = "form-control" })
+                                </div>
 
-                                    <div class="form-group">
-                                        @Html.DropDownListFor(m => m.Category, Model.departmentsList, "Select department to send", new { @class = "form-control" })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+
                                     </div>
 
 
+                                </div>
+                                @if (Model.modalType == 0)
+                                {
+                                    <p><b>Approval request</b></p>
                                     <div class="form-group">
-                                        @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
-                                        <div class="col-md-10">
-                                            @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
-
-                                        </div>
+                                        @Html.DropDownListFor(m => m.NeedsApproval, Model.Approval, "Approval request", new { @class = "form-control", @onchange = "ShowDep()" })
                                     </div>
 
-                                    <div class="form-group">
-                                        @Html.DropDownListFor(m => m.NeedsApproval, Model.Approval, "Select department to send", new { @class = "form-control" })
+                                    <div class="form-group" id="depDropdown">
+                                        @Html.DropDownListFor(m => m.ApprovalType, Model.ApprovalTypeList, "-", new { @class = "form-control" })
                                     </div>
-                                    <div class="modal-footer">
-                                        <div class="form-group">
-                                            <div class="col-md-offset-2 col-md-10">
-                                                <input type="submit" value="Send" class="btn btn-default" />
-                                            </div>
+                                }
+                                @if (Model.modalType == 2)
+                                {
+                                    
+                                    Model.NeedsApproval = ViewBag.to;
+                                    
+                                    @Html.HiddenFor(x => x.NeedsApproval)
+                                    <p>Request will be send back to @ViewBag.to</p>
+                                }
+                                <div class="modal-footer">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Send" class="btn btn-success" />
                                         </div>
                                     </div>
                                 </div>
@@ -48,5 +67,22 @@
                         </div>
                     </div>
                 </div>
-            </div>}
-    </div>
+            </div>
+        </div>}
+</div>
+
+
+<script>
+    window.onload = ShowDep();
+
+    function ShowDep() {
+        var x = document.getElementById("depDropdown");
+        var y = document.getElementById("NeedsApproval");
+        var selectedOption =y.options[y.selectedIndex].text;
+        if (selectedOption == "YES") {
+            x.style.visibility = 'visible';
+        }
+        else {
+            x.style.visibility = 'hidden';
+        }
+    }</script>

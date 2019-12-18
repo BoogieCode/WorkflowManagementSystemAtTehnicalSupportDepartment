@@ -11,13 +11,16 @@
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Request</h4>
+    <h4>an incident or request</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-    <div class="form-group">
-        @Html.DropDownListFor(m=>m.type,Model.IncidentRequest,"Select type", new { @class = "form-control" })
+<div class="form-group">
+    @Html.Label("type", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(m => m.type, Model.IncidentRequest, "Select type", new { @class = "form-control" })
+        </div>
     </div>
 
 
@@ -40,26 +43,33 @@
 
 
     <div class="form-group">
-        @Html.DropDownListFor(m=>m.departmentAssigned,Model.departmentsList,"Select department", new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.image, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.Label("department", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            <label for="file">Upload Image:</label>
-            <input type="file" name="file" id="file" style="width: 100%;" />
+            @Html.DropDownListFor(m => m.departmentAssigned, Model.departmentsList, "Select department", new { @class = "form-control" })
         </div>
-    </div>
+        </div>
 
-    <div class="form-group">
-        @Html.DropDownListFor(m => m.priority, Model.priorityList, "Select priority", new { @class = "form-control" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <label for="file">Upload Image:</label>
+                <input type="file" name="file" id="file" style="width: 100%;" />
+            </div>
+        </div>
 
-    </div>
-    </div>
+        <div class="form-group">
+            @Html.Label("priority", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.DropDownListFor(m => m.priority, Model.priorityList, "Select priority", new { @class = "form-control" })
+
+            </div>
+        </div>
+        </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Create" class="btn btn-primary" />
         </div>
     </div>
 

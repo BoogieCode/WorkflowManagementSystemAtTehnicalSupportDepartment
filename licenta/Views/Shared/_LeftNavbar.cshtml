@@ -1,22 +1,239 @@
 ﻿
+@using Microsoft.AspNet.Identity
+
+
+
+@if (Request.IsAuthenticated)
+{
+    <style>
+
+
+        body {
+            margin-left: 15%;
+        }
+
+        .inverted {
+            filter: invert(100%);
+        }
+
+        td {
+            height: 50px;
+            /*width: 50px;*/
+        }
+
+        #cssTable td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+
+    @*using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                </li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            </ul>
+        }*@
+
+
+
+
 
     <div class="sidenav">
 
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.Name + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-            </li>
-        </ul>
 
-        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        <a href="#" class="active">Home</a>
-        <a href="#">Link 1</a>
-        <a href="#">Link 2</a>
-        <a href="#">Link 3</a>
-        <a href="#">Link 4</a>
+
+        <ul class="list-group nav" id="nav">
+
+            <li>
+                <table>
+                    <tr>
+                        <td rowspan="9">
+                            <img src="~/Images/avatar.png" width="100" height="100" style="margin-left:0.5em; margin-right:0.5em;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style="color:darkslategray">Company @Request.Cookies["companyCookie"].Value</p>
+                        </td>
+                    </tr>
+
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink("Hello " + User.Identity.Name + "! \n", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+
+
+                                @Html.AntiForgeryToken()
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></td>
+                        </tr>
+
+                    }
+
+                </table>
+            </li>
+
+
+
+
+            @if (this.User.IsInRole("Employee"))
+            {
+                <li>
+                    <hr />
+                </li>
+                <li>
+                    <table id="cssTable">
+                        <tr>
+                            <td width="50px">
+                                <img src="@Url.Content("~/Images/Dashbaord.png")" width="30" height="30" class="inverted" />
+                            </td>
+                            <td>
+                                @Html.ActionLink("Dashboard", "Dashboard", "Home")
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+                <li>
+
+                    <table id="cssTable">
+                        <tr>
+                            <td width="50px">
+                                <img src="@Url.Content("~/Images/unassigned.png")" width="30" height="30" class="inverted" />
+                            </td>
+                            <td>
+                                @Html.ActionLink("Unassigned", "Unassigned", "Home")
+                            </td>
+                        </tr>
+                    </table>
+
+                </li>
+
+            }
+            @if (this.User.IsInRole("Administrator"))
+            {
+                <li>
+                    <hr />
+                </li>
+                <li id="usersRegister">
+                    <table id="cssTable">
+                        <tr>
+                            <td width="50px">
+                                <img src="@Url.Content("~/Images/Users.png")" width="30" height="30" class="inverted" />
+                            </td>
+                            <td>
+                                @Html.ActionLink("Users", "Index", "UsersManagement")
+                            </td>
+                        </tr>
+                    </table>
+
+                </li>
+                <li>
+                    <table id="cssTable">
+                        <tr>
+                            <td width="50px">
+                                <img src="@Url.Content("~/Images/Dashbaord.png")" width="30" height="30" class="inverted" />
+                            </td>
+                            <td>
+                                @Html.ActionLink("Administrator", "Index", "Administrator")
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            }
+            <li>
+                <hr />
+            </li>
+            <li>
+                <table id="cssTable">
+                    <tr>
+                        <td width="50px">
+                            <img src="@Url.Content("~/Images/myincidents.png")" width="30" height="30" class="inverted" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("My Incidents/Requests", "Support", "IncidentRequest")
+                        </td>
+                    </tr>
+                </table>
+
+            </li>
+            <li>
+                <table id="cssTable">
+                    <tr>
+                        <td width="50px">
+                            <img src="@Url.Content("~/Images/serviceRequest.png")" width="30" height="30" class="inverted" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Create Incident/Request", "Create", "IncidentRequest")
+                        </td>
+                    </tr>
+                </table>
+            </li>
+            <li>
+
+                <table id="cssTable">
+                    <tr>
+                        <td width="50px">
+                            <img src="@Url.Content("~/Images/statistics.png")" width="30" height="30" class="inverted" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Raports", "About", "Home", null, new { @style = "width:160; !important" })
+                        </td>
+                    </tr>
+                </table>
+
+            </li>
+
+
+
+
+        </ul>
     </div>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
+
+}
+else
+{
+    <style>
+
+        body {
+            margin: 0;
+        }
+    </style>
+    @*
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("Users", "Index", "UsersManagement")</li>
+                        <li>@Html.ActionLink("Create Incident/Request", "Create", "IncidentRequest")</li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+
+
+}

@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using licenta.Migrations;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(licenta.Startup))]

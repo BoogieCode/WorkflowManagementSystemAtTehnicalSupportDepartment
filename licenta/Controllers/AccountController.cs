@@ -54,6 +54,9 @@ namespace licenta.Controllers
             }
         }
 
+
+      
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -101,7 +104,8 @@ namespace licenta.Controllers
                             myCookie.Value = check.company;
                             myCookie.Expires = DateTime.Now.AddDays(7);
                             Response.Cookies.Add(myCookie);
-                            return RedirectToLocal(returnUrl);
+                            return RedirectToAction("Index", "Manage");
+                        //return RedirectToLocal(returnUrl);
                         case SignInStatus.LockedOut:
                             return View("Lockout");
                         case SignInStatus.RequiresVerification:
@@ -110,6 +114,7 @@ namespace licenta.Controllers
                         default:
                             ModelState.AddModelError("", "Invalid login attempt.");
                             return View(model);
+                            //return RedirectToAction("Manage", "Home");
                     }
                 }
             } }

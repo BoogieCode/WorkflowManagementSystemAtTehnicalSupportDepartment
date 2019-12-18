@@ -62,39 +62,35 @@ namespace licenta.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(IncidentRequestViewModel model)
         {
-            /*
-             De facut in aceasta ordine:
-             -model ~done!
-             -view  ~done!
-             -controller
-             */
+           
             if (ModelState.IsValid)
             {
                 using (TehnicalDepartmentDb db = new TehnicalDepartmentDb())
                 {
                     string CreatedByName = User.Identity.Name;
                     int CreatedById = db.Users.FirstOrDefault(u => u.username == CreatedByName).userId;
-                    Request request = new Request {
+                    Request request = new Request
+                    {
                         createdBy = CreatedById,
                         title = model.title,
                         description = model.description,
                         type = model.type == "0" ? false : true,
-                        departmentAssigned=model.departmentAssigned,
-                        employeeAssigned=null,
-                        priority=model.priority
+                        departmentAssigned = model.departmentAssigned,
+                        employeeAssigned = null,
+                        priority = model.priority
                     };
                     db.Requests.Add(request);
                     await db.SaveChangesAsync();
                     List<Request> newRequestList = db.Requests.Where(u => u.createdBy == CreatedById).ToList();
-                    List<Request> newRequestListDescendingOrder = newRequestList.OrderByDescending(u=>u.requestId).ToList();
+                    List<Request> newRequestListDescendingOrder = newRequestList.OrderByDescending(u => u.requestId).ToList();
                     int newRequestId = newRequestListDescendingOrder.First().requestId;
                     RequestHistory requestHistory = new RequestHistory
                     {
-                        requestId= newRequestId,
-                        from= CreatedByName,
-                        to=model.departmentAssigned,
-                        data=DateTime.Now,
-                        status="Pending"
+                        requestId = newRequestId,
+                        from = CreatedByName,
+                        to = model.departmentAssigned,
+                        data = DateTime.Now,
+                        status = "Pending"
                     };
 
                     db.RequestHistories.Add(requestHistory);
@@ -104,11 +100,11 @@ namespace licenta.Controllers
 
 
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Support");
                 }
             }
 
-           // ViewBag.createdBy = new SelectList(db.Users, "userId", "company", request.createdBy);
+            // ViewBag.createdBy = new SelectList(db.Users, "userId", "company", request.createdBy);
             return View(model);
         }
 
@@ -179,5 +175,39 @@ namespace licenta.Controllers
             }
             base.Dispose(disposing);
         }
-    }
+
+        public ActionResult Support()
+        {
+
+            using (TehnicalDepartmentDb db = new TehnicalDepartmentDb())
+            {
+                string CreatedByName = User.Identity.Name;
+                string Company = Request.Cookies["companyCookie"].Value;
+                int id = db.Users.Where(m => m.company == Company && m.username == CreatedByName).FirstOrDefault().userId;
+                List<Request> requests = db.Requests.Where(m => m.createdBy == id).ToList();
+                List<myIncidentRequestViewModel> myIncidentRequestViewModels = new List<myIncidentRequestViewModel>();
+
+                foreach (var req in requests)
+                {
+
+                    List<RequestHistory> s = new List<RequestHistory>();
+                    s = db.RequestHistories.Where(m => m.requestId == req.requestId).ToList();
+                    string statusString = s.Last().status;
+
+                    myIncidentRequestViewModels.Add(new myIncidentRequestViewModel
+                    {
+                        Id = req.requestId,
+                        IncidentRequest = req.type == false ? "Incident" : "Request",
+                        Title = req.title,
+                        CreatedBy = db.Users.Where(m => m.userId == req.createdBy).FirstOrDefault().username,
+                        DepartmentAssigned = req.departmentAssigned,
+                        Priority = req.priority == 0 ? "Low" : req.priority == 1 ? "Medium" : "High",
+                        Status = statusString
+
+                    });
+                }
+                return View(myIncidentRequestViewModels);
+            }
+        }
+    } 
 }

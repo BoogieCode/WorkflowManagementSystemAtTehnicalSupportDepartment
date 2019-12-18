@@ -45,6 +45,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Cryptography.Internal, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Cryptography.Internal.3.0.0\lib\netstandard2.0\Microsoft.AspNetCore.Cryptography.Internal.dll</HintPath>
     </Reference>
@@ -175,12 +181,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -252,6 +252,10 @@
     <Compile Include="Migrations\201911112000032_First.Designer.cs">
       <DependentUpon>201911112000032_First.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911260746280_First1.cs" />
+    <Compile Include="Migrations\201911260746280_First1.Designer.cs">
+      <DependentUpon>201911260746280_First1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CompanyUsersRegisterViewModel.cs" />
@@ -276,6 +280,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Administrator.png" />
+    <Content Include="Images\avatar.png" />
+    <Content Include="Images\Dashbaord.png" />
+    <Content Include="Images\iconIdea.png" />
+    <Content Include="Images\myincidents.png" />
+    <Content Include="Images\rounduserlogo.png" />
+    <Content Include="Images\serviceRequest.png" />
+    <Content Include="Images\statistics.png" />
+    <Content Include="Images\unassigned.png" />
+    <Content Include="Images\Users.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -289,6 +303,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Images\itil.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -342,6 +357,8 @@
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\ModalPartialSendView.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
+    <Content Include="Views\Home\LoginPartial.cshtml" />
+    <Content Include="Views\IncidentRequest\Support.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -362,6 +379,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201911112000032_First.resx">
       <DependentUpon>201911112000032_First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911260746280_First1.resx">
+      <DependentUpon>201911260746280_First1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

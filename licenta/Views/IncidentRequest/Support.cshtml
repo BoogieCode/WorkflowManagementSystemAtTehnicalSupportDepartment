@@ -1,0 +1,46 @@
+﻿@model List<licenta.Models.myIncidentRequestViewModel>
+
+@{
+    ViewBag.Title = "Support";
+}
+
+<h2>Support</h2>
+
+
+<table class="table">
+    <tr>
+        <td>Type</td>
+        <td>Title</td>
+        <td>DepartmentAssigned</td>
+        <td>Status</td>
+        <td>Priority</td>
+
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncidentRequest)
+            </td>
+            <td>
+                <a href="~/Home/History?id=@item.Id">@Html.DisplayFor(modelItem => item.Title)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentAssigned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Priority)
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+
+

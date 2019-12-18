@@ -5,14 +5,14 @@ namespace licenta.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<licenta.DatabaseConnection.TehnicalDepartmentDb>
+    internal sealed class Configuration : DbMigrationsConfiguration<licenta.Models.ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(licenta.DatabaseConnection.TehnicalDepartmentDb context)
+        protected override void Seed(licenta.Models.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
