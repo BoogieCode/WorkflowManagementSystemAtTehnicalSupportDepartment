@@ -12,50 +12,46 @@ namespace licenta.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdministratorController : Controller
     {
-        private TehnicalDepartmentDb db = new TehnicalDepartmentDb();
+        private readonly TehnicalDepartmentDb db = new TehnicalDepartmentDb();
 
         // GET: Administrator
         public ActionResult Index()
         {
-            List<Request> requestsList = db.Requests.ToList();
+            var requestsList = db.Requests.ToList();
             string company = Request.Cookies["companyCookie"].Value;
-            List<User> companyUsers = db.Users.Where(m => m.company == company).ToList();
-            requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId&&l.company==company)).ToList();
-            List<myIncidentRequestViewModel> myIncidentRequestViewModel = new List<myIncidentRequestViewModel>();
+            var companyUsers = db.Users.Where(m => m.company == company).ToList();
+            requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId && l.company == company)).ToList();
+            var myIncidentRequestViewModel = new List<myIncidentRequestViewModel>();
             try
             {
+                //????
             }
             catch
             {
                 return View();
             }
-            string statusString;
+
+            string statusString = string.Empty;
             foreach (var req in requestsList)
             {
-                List<RequestHistory> s = new List<RequestHistory>();
-                s = db.RequestHistories.Where(m => m.requestId == req.requestId).ToList();
-                //var lasts = s.Last().status;
-                statusString = s.Last().status;
-                //switch (s.Last().status)
-                //{
-                //    case 1:
-                //        statusString=
-                //};
+
+                var requestHistoryList = new List<RequestHistory>();
+                requestHistoryList = db.RequestHistories.Where(m => m.requestId == req.requestId).ToList();
+
+                statusString = requestHistoryList.Last()?.status;
+
                 myIncidentRequestViewModel.Add(new myIncidentRequestViewModel
                 {
-                    Id=req.requestId,
-                    IncidentRequest = req.type == false ? "Incident" : "Request",
-                    Title=req.title,
-                    CreatedBy=db.Users.Where(m=>m.userId==req.createdBy).FirstOrDefault().username,
-                    DepartmentAssigned=req.departmentAssigned,
-                    Priority=req.priority==0?"Low":req.priority==1?"Medium":"High",
-                    Status=statusString
+                    Id = req.requestId,
+                    IncidentRequest = !req.type ? "Incident" : "Request",
+                    Title = req.title,
+                    CreatedBy = db.Users.Where(m => m.userId == req.createdBy).FirstOrDefault()?.username,
+                    DepartmentAssigned = req.departmentAssigned,
+                    Priority = req.priority == 0 ? "Low" : req.priority == 1 ? "Medium" : "High",
+                    Status = statusString
 
-            }) ;
+                });
             }
-            // var users=db.Requests.Where(m=>m.createdBy==companyUsers)
-            //var requests = db.Requests.Where()
-            // return View(await requests.ToListAsync());
             return View(myIncidentRequestViewModel);
         }
 
@@ -134,7 +130,7 @@ namespace licenta.Controllers
         [ChildActionOnly]
         public ActionResult _RequestIncidentList()
         {
-          
+
             return PartialView("asd");
         }
     }
