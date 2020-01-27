@@ -79,6 +79,7 @@ namespace licenta.Controllers
                         employeeAssigned = null,
                         priority = model.priority
                     };
+
                     db.Requests.Add(request);
                     await db.SaveChangesAsync();
                     List<Request> newRequestList = db.Requests.Where(u => u.createdBy == CreatedById).ToList();

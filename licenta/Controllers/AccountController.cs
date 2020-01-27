@@ -1,16 +1,15 @@
-﻿using System;
-using System.Globalization;
+﻿using licenta.DatabaseConnection;
+using licenta.Helpers;
+using licenta.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using licenta.Models;
-using licenta.DatabaseConnection;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace licenta.Controllers
 {
@@ -19,9 +18,12 @@ namespace licenta.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
-        public AccountController()
+        private IAuthenticationManager AuthenticationManager
         {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -54,9 +56,6 @@ namespace licenta.Controllers
             }
         }
 
-
-      
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -86,9 +85,6 @@ namespace licenta.Controllers
                         return View(model);
                     }
 
-
-
-
                     // This doesn't count login failures towards account lockout
                     // To enable password failures to trigger account lockout, change to shouldLockout: true
                     var result = await SignInManager.PasswordSignInAsync(model.User, model.Password, model.RememberMe, shouldLockout: false);
@@ -96,28 +92,24 @@ namespace licenta.Controllers
 
                     HttpCookie myCookie = new HttpCookie("companyCookie");
 
-
                     switch (result)
                     {
-
                         case SignInStatus.Success:
                             myCookie.Value = check.company;
                             myCookie.Expires = DateTime.Now.AddDays(7);
                             Response.Cookies.Add(myCookie);
                             return RedirectToAction("Index", "Manage");
-                        //return RedirectToLocal(returnUrl);
                         case SignInStatus.LockedOut:
                             return View("Lockout");
                         case SignInStatus.RequiresVerification:
                             return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                        case SignInStatus.Failure:
                         default:
                             ModelState.AddModelError("", "Invalid login attempt.");
                             return View(model);
-                            //return RedirectToAction("Manage", "Home");
                     }
                 }
-            } }
+            }
+        }
 
         //
         // GET: /Account/VerifyCode
@@ -155,7 +147,6 @@ namespace licenta.Controllers
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
                     return View(model);
@@ -167,28 +158,21 @@ namespace licenta.Controllers
         {
             ApplicationDbContext context = new ApplicationDbContext();
 
-            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var UserManager = new Microsoft.AspNet.Identity.UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             // In Startup iam creating first Admin Role and creating a default Admin User    
             if (!roleManager.RoleExists("Administrator"))
             {
 
                 // first we create Admin rool   
-                var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+                var role = new IdentityRole();
                 role.Name = "Administrator";
                 roleManager.Create(role);
-
-
-
             }
-            var result1 = UserManager.AddToRole(username, "Administrator");
+
+            _ = UserManager.AddToRole(username, "Administrator");
         }
-    
-
-
-
 
         //
         // GET: /Account/Register
@@ -213,18 +197,17 @@ namespace licenta.Controllers
                         User check = db.Users.FirstOrDefault(u => u.company == model.Company);
                         if (check != null)
                         {
-                            return View(model); 
+                            return View(model);
                         }
-                     
 
-                var user = new ApplicationUser { UserName = model.User, Email = model.Email };
-                
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-              
+                        var user = new ApplicationUser { UserName = model.User, Email = model.Email };
+
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+
                         {
 
-                           // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            // await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                             createRolesandUsers(user.Id);
                             User newUser = new User
                             {
@@ -422,7 +405,6 @@ namespace licenta.Controllers
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
@@ -496,8 +478,7 @@ namespace licenta.Controllers
         [AllowAnonymous]
         public ActionResult sucessfullyRegistered()
         {
-            ViewBag.success = "You were registered sucessfully";
-
+            ViewBag.success = "You were registered successfully";
             return View();
         }
 
@@ -521,20 +502,7 @@ namespace licenta.Controllers
             base.Dispose(disposing);
         }
 
-        
-
-        
-        #region Helpers
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        #region RedirectHelpers
 
         private void AddErrors(IdentityResult result)
         {
@@ -553,34 +521,6 @@ namespace licenta.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        internal class ChallengeResult : HttpUnauthorizedResult
-        {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
-            {
-            }
-
-            public ChallengeResult(string provider, string redirectUri, string userId)
-            {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
-            }
-
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
-                {
-                    properties.Dictionary[XsrfKey] = UserId;
-                }
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
-            }
-        }
         #endregion
     }
 }
