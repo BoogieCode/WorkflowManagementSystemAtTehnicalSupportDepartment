@@ -23,7 +23,7 @@ namespace licenta.Models
         public string description { set; get; }
         public string departmentAssigned { set; get; }
         public string employeeAssigned { set; get; }
-        public string image { set; get; }
+        public HttpPostedFileBase file { set; get; }
         public int priority { set; get; }
 
 

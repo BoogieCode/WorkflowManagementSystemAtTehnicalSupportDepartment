@@ -1,0 +1,91 @@
+﻿@model licenta.Models.myFilteredIncidentRequestViewModel
+
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            @{ int incidents = Model.incidentrequestCount["Incident"];
+                int requests = Model.incidentrequestCount["Request"];}
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                
+                ['Incidents',@incidents],
+                ['Requests', @requests],
+             
+            ]);
+            
+            var options = {
+                title: 'Incident/Request',
+                pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+
+                @{ int pending = Model.statusCount["Pending"];
+                    int inprogress = Model.statusCount["In Progress"];
+                    int waitingforapproval = Model.statusCount["Waiting for approval"];
+                    int done = Model.statusCount["Done"];}
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+                
+                ['Pending',@pending],
+                ['In progress', @inprogress],                
+                ['Waiting for approval',@waitingforapproval],
+                ['Done', @done],
+             
+            ]);
+            
+            var options = {
+                title: 'Status',
+                pieHole: 0.4,
+            };
+
+              var chart = new google.visualization.PieChart(document.getElementById('xxl'));
+            chart.draw(data, options);
+
+
+            
+                @{      int hardware = Model.depassignedCount["Hardware"];
+                        int software = Model.depassignedCount["Software"];
+                        int finances = Model.depassignedCount["Finances"]; }
+            var data = google.visualization.arrayToDataTable([
+
+                ['Task', 'Hours per Day'],
+
+
+                ['Hardware',@hardware],
+
+                ['Software', @software],
+
+                ['Finances',@finances],
+
+            ]);
+
+                    var options = {
+                title: 'Departments',
+                pieHole: 0.4,
+            };
+                    var chart = new google.visualization.PieChart(document.getElementById('try3'));
+                    chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <div id="donutchart" style="width: 400px; height: 400px;"></div>
+            </td>
+            <td>
+                <div id="xxl" style="width: 400px; height: 400px;"></div>
+            </td>
+            <td>
+                <div id="try3" style="width: 400px; height: 400px;"></div>
+            </td>
+        </tr>
+    </table>
+</body>

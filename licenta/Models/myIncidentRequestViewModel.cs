@@ -7,6 +7,7 @@ namespace licenta.Models
 {
     public class myIncidentRequestViewModel
     {
+     
         public int Id;
         public string IncidentRequest { set; get; }
         public string Title { set; get; }
@@ -15,6 +16,6 @@ namespace licenta.Models
         public string Status { get; set; }
         public string Priority { get; set; }
 
-
+        
     }
 }

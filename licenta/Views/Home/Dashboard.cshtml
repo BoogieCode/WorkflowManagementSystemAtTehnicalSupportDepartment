@@ -52,14 +52,19 @@ else
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <button class="btn-primary">Mark as done</button>
+                @using (Html.BeginForm("ModalPartialDone", "Home", new { enctype = "multipart/form-data" }))
+                {
+                    <button type="button" class="btn-block btn-primary" onclick="doneFunction(@item.Id)" id="@item.Id">Done</button>
+                    int x = item.Id;
+                    <div class="modal fade" id="modalDone" role="dialog" data-url='@Url.Action("ModalPartialDone", "Home")'></div>
+                }
             </td>
             <td>
                 @using (Html.BeginForm("ModalPartialSendView", "Home", new { enctype = "multipart/form-data" }))
                 {
-                    <button type="button" class="btn-block btn-primary"  onclick="myFunction(@item.Id)" id="@item.Id">Send</button>
+                    <button type="button" class="btn-block btn-primary"  onclick="sendFunction(@item.Id)" id="@item.Id">Send</button>
                     int x = item.Id;
-                    <div class="modal fade" id="myModal" role="dialog" data-url='@Url.Action("ModalPartialSendView", "Home")'></div>
+                    <div class="modal fade" id="modalSend" role="dialog" data-url='@Url.Action("ModalPartialSendView", "Home")'></div>
                 }
             </td>
         </tr>
@@ -71,15 +76,25 @@ else
 
 <script type="text/javascript">
    
-        function myFunction(x) {
+        function sendFunction(x) {
 
-            var urlValue = $('#myModal').data('url') + "?userid=" + x;
+            var urlValue = $('#modalSend').data('url') + "?userid=" + x;
             var url = urlValue;
             debugger;
             $.get(url, function (data) {
-                $("#myModal").html(data);
-                $("#myModal").modal('show');
+                $("#modalSend").html(data);
+                $("#modalSend").modal('show');
             });
         }
-   
+
+        function doneFunction(x) {
+
+            var urlValue = $('#modalDone').data('url') + "?userid=" + x;
+            var url = urlValue;
+            $.get(url, function (data) {
+                $("#modalDone").html(data);
+                $("#modalDone").modal('show');
+            });
+        }
+
 </script>

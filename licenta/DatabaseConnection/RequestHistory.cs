@@ -32,5 +32,9 @@ namespace licenta.DatabaseConnection
         [Required]
         [StringLength(50)]
         public string status { get; set; }
+
+        public int? attachmentsId { get; set; }
+
+        public virtual File File { get; set; }
     }
 }

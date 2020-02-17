@@ -78,13 +78,13 @@ namespace licenta.Controllers
             var users = db.Users.Include(u => u.Department).Where(u=>u.type!=0 && u.company==CompanyName);
             foreach (var user in users)
             {
-                string depName = "-";
+                string depName;
                 try
                 {
                     depName = user.Department.name;
                 }catch(Exception e)
                 {
-                    
+                    depName = "-";
                 }
                 model.Add(new CompanyUserViewModel
                 {
@@ -93,7 +93,7 @@ namespace licenta.Controllers
                     email = user.email,
                     type = user.type == 1 ? "Employee" : "Customer",
                     department = depName 
-                }) ;
+                });
             }
             return View(model);
         }

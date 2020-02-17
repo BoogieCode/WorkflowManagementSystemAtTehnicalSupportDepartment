@@ -340,6 +340,8 @@ E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bi
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\roslyn\VBCSCompiler.exe
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\roslyn\VBCSCompiler.exe.config
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Antlr3.Runtime.dll
+E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Autofac.dll
+E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Autofac.Integration.Mvc.dll
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\EntityFramework.dll
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\EntityFramework.SqlServer.dll
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Microsoft.AspNet.Identity.Core.dll
@@ -386,6 +388,9 @@ E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bi
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\System.Web.WebPages.dll
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\System.Web.WebPages.Razor.dll
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\WebGrease.dll
+E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Autofac.pdb
+E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Autofac.xml
+E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Autofac.Integration.Mvc.xml
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\EntityFramework.xml
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\EntityFramework.SqlServer.xml
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Microsoft.AspNetCore.Cryptography.Internal.xml
@@ -429,10 +434,10 @@ E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bi
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Microsoft.Owin.Security.OAuth.xml
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.csprojAssemblyReference.cache
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.Migrations.First.resources
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.Migrations.First1.resources
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.csproj.GenerateResource.cache
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.csproj.CopyComplete
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.dll
 E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.pdb
+E:\GithubProjects\WorkflowManagementSystemAtTehnicalSupportDepartment\licenta\obj\Debug\licenta.csprojAssemblyReference.cache

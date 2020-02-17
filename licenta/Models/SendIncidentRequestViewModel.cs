@@ -25,6 +25,7 @@ namespace licenta.Models
        public string ApprovalType { set; get; }
        public string Status { get; set; }
        public int modalType { get; set; }
+       public HttpPostedFileBase file { set; get; }
        public List<SelectListItem> departmentsList { get; set; } = new List<SelectListItem>();
        public List<SelectListItem> Approval { get; set; } = new List<SelectListItem>();
        public List<SelectListItem> ApprovalTypeList { get; set; } = new List<SelectListItem>();

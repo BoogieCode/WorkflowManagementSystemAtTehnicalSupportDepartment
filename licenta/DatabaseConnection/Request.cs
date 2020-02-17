@@ -26,11 +26,14 @@ namespace licenta.DatabaseConnection
         [StringLength(50)]
         public string departmentAssigned { get; set; }
 
+        [StringLength(50)]
         public string employeeAssigned { get; set; }
 
-        public string image { get; set; }
+        public int? fileId { get; set; }
 
-        public int priority { get; set; }
+        public int? priority { get; set; }
+
+        public virtual File File { get; set; }
 
         public virtual User User { get; set; }
     }

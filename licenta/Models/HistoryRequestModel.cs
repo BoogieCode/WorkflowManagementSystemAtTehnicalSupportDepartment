@@ -12,6 +12,7 @@ namespace licenta.Models
         public string message { set; get; }
         public DateTime data { set; get; }
         public string status { set; get; }
+        public int? attachmentsId { set; get; }
         public string approvaltype { set; get; }
 
     }

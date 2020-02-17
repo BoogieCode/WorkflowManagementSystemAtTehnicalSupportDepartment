@@ -1,0 +1,220 @@
+﻿@model licenta.Models.myFilteredIncidentRequestViewModel
+
+<h1>RAPORTS</h1>
+
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            @{ int incidents = Model.incidentrequestCount["Incident"];
+                int requests = Model.incidentrequestCount["Request"];}
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+
+                ['Incidents',@incidents],
+                ['Requests', @requests],
+
+            ]);
+
+            var options = {
+                title: 'Incident/Request',
+                pieHole: 0.4,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+            chart.draw(data, options);
+
+                @{ int pending = Model.statusCount["Pending"];
+                    int inprogress = Model.statusCount["In Progress"];
+                    int waitingforapproval = Model.statusCount["Waiting for approval"];
+                    int done = Model.statusCount["Done"];}
+            var data = google.visualization.arrayToDataTable([
+                ['Task', 'Hours per Day'],
+
+                ['Pending',@pending],
+                ['In progress', @inprogress],
+                ['Waiting for approval',@waitingforapproval],
+                ['Done', @done],
+
+            ]);
+
+            var options = {
+                title: 'Status',
+                pieHole: 0.4,
+            };
+
+              var chart = new google.visualization.PieChart(document.getElementById('xxl'));
+            chart.draw(data, options);
+
+
+
+                @{      int hardware = Model.depassignedCount["Hardware"];
+                        int software = Model.depassignedCount["Software"];
+                        int finances = Model.depassignedCount["Finances"]; }
+            var data = google.visualization.arrayToDataTable([
+
+                ['Task', 'Hours per Day'],
+
+
+                ['Hardware',@hardware],
+
+                ['Software', @software],
+
+                ['Finances',@finances],
+
+            ]);
+
+                    var options = {
+                title: 'Departments',
+                pieHole: 0.4,
+            };
+                    var chart = new google.visualization.PieChart(document.getElementById('try3'));
+                    chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+
+
+    <p>
+
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Filters
+        </a>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                @using (Html.BeginForm("Raport", "Home", FormMethod.Get))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <table class="table">
+                                <tr>
+                                    <td><b>Types</b></td>
+                                    <td>
+                                        Incident
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedType[0], Model.fm.isCheckedType[0])
+                                    </td>
+                                    <td>
+                                        Request
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedType[1], Model.fm.isCheckedType[1])
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Status</b></td>
+                                    <td>
+                                        Pending
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedStatus[0], Model.fm.isCheckedStatus[0])
+                                    </td>
+                                    <td>
+                                        In Progress
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedStatus[1], Model.fm.isCheckedStatus[1])
+                                    </td>
+                                    <td>
+                                        Waiting for approval
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedStatus[2], Model.fm.isCheckedStatus[2])
+                                    </td>
+                                    <td>
+                                        Done
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedStatus[3], Model.fm.isCheckedStatus[3])
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>Department</b></td>
+                                    <td>
+                                        Hardware
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedCategory[0], Model.fm.isCheckedCategory[0])
+                                    </td>
+                                    <td>
+                                        Software
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedCategory[1], Model.fm.isCheckedCategory[1])
+                                    </td>
+                                    <td>
+                                        Finances
+                                        @Html.CheckBoxFor(m => m.fm.isCheckedCategory[2], Model.fm.isCheckedCategory[2])
+                                    </td>
+                                </tr>
+                            </table>
+
+                            @Html.DropDownListFor(
+                            m => m.orderVal,
+                            new SelectList(Model.orderedBy, "Value", "Key"))
+
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="GO" class="btn btn-primary" />
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+        <table>
+            <tr>
+                <td>
+                    <table border="1">
+                        <tr>
+                            <td>
+                                <h2> &nbsp;Incidents created:  &nbsp;@Model.incidentrequestCount["Incident"]&nbsp;</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h2> &nbsp;Requests created: @Model.incidentrequestCount["Request"]&nbsp;</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h2> &nbsp;Done: @Model.statusCount["Done"]</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h2>
+                                    &nbsp;On working: @(Model.statusCount["Pending"] +
+  Model.statusCount["In Progress"] +
+    Model.statusCount["Waiting for approval"])
+                                </h2>
+                            </td>
+
+                        </tr>
+                    </table>
+                </td>
+                    @Html.ActionLink("Download Raport", "DownloadRaport",new { filter=Model})
+                <td>
+                    <div id="donutchart" style="width: 400px; height: 400px;"></div>
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                </td>
+                <td>
+                    <div id="xxl" style="width: 400px; height: 400px;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div id="try3" style="width: 400px; height: 400px;"></div>
+                </td>
+            </tr>
+        </table>
+</body>

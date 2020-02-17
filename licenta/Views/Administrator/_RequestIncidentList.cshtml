@@ -1,4 +1,6 @@
-﻿@model List<licenta.Models.myIncidentRequestViewModel>
+﻿@model licenta.Models.myFilteredIncidentRequestViewModel
+
+
 
 <table class="table">
     <tr>
@@ -22,7 +24,7 @@
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.myIncidents)
     {
         <tr>
             <td>

@@ -15,13 +15,22 @@ namespace licenta.Controllers
         private TehnicalDepartmentDb db = new TehnicalDepartmentDb();
 
         // GET: Administrator
-        public ActionResult Index()
+        public ActionResult Index(myFilteredIncidentRequestViewModel model)
         {
+            if (model == null)
+            {
+                model = new myFilteredIncidentRequestViewModel();
+            }
             List<Request> requestsList = db.Requests.ToList();
             string company = Request.Cookies["companyCookie"].Value;
             List<User> companyUsers = db.Users.Where(m => m.company == company).ToList();
-            requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId&&l.company==company)).ToList();
-            List<myIncidentRequestViewModel> myIncidentRequestViewModel = new List<myIncidentRequestViewModel>();
+            requestsList = db.Requests.Where(m => db.Users.Any(l => m.createdBy == l.userId && l.company == company)).ToList();
+           
+            
+        
+
+
+            //List<myIncidentRequestViewModel> myIncidentRequestViewModel = new List<myIncidentRequestViewModel>();
             try
             {
             }
@@ -30,6 +39,10 @@ namespace licenta.Controllers
                 return View();
             }
             string statusString;
+            if (model.orderVal == "1")
+            {
+                requestsList.Reverse();
+            }
             foreach (var req in requestsList)
             {
                 List<RequestHistory> s = new List<RequestHistory>();
@@ -41,26 +54,99 @@ namespace licenta.Controllers
                 //    case 1:
                 //        statusString=
                 //};
-                myIncidentRequestViewModel.Add(new myIncidentRequestViewModel
-                {
-                    Id=req.requestId,
-                    IncidentRequest = req.type == false ? "Incident" : "Request",
-                    Title=req.title,
-                    CreatedBy=db.Users.Where(m=>m.userId==req.createdBy).FirstOrDefault().username,
-                    DepartmentAssigned=req.departmentAssigned,
-                    Priority=req.priority==0?"Low":req.priority==1?"Medium":"High",
-                    Status=statusString
+                //de refacut intr o zi
 
-            }) ;
+
+                if (model.fm.isCheckedType[0]==false && req.type == false)
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedType[1] == false && req.type == true)
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedStatus[0] == false && statusString == "Pending")
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedStatus[1] == false && statusString == "In Progress")
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedStatus[2] == false && statusString == "Waiting for approval")
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedStatus[3] == false && statusString == "Done")
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedCategory[0] == false && req.departmentAssigned == "Hardware")
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedCategory[1] == false && req.departmentAssigned == "Software")
+                {
+                    continue;
+                }
+                if (model.fm.isCheckedCategory[2] == false && req.departmentAssigned == "Finances")
+                {
+                    continue;
+                }
+
+
+                model.myIncidents.Add(new myIncidentRequestViewModel
+                {
+                    Id = req.requestId,
+                    IncidentRequest = req.type == false ? "Incident" : "Request",
+                    Title = req.title,
+                    CreatedBy = db.Users.Where(m => m.userId == req.createdBy).FirstOrDefault().username,
+                    DepartmentAssigned = req.departmentAssigned,
+                    Priority = req.priority == 0 ? "Low" : req.priority == 1 ? "Medium" : "High",
+                    Status = statusString
+
+                });
+
+
+
+                
             }
+            int count;
+            count = model.myIncidents.Count(x => x.IncidentRequest == "Incident");
+            model.incidentrequestCount.Add("Incident", count);
+            count = model.myIncidents.Count(x => x.IncidentRequest == "Request");
+            model.incidentrequestCount.Add("Request", count);
+
+            count = model.myIncidents.Count(x => x.Status == "Pending");
+            model.statusCount.Add("Pending", count);
+            count = model.myIncidents.Count(x => x.Status == "In Progress");
+            model.statusCount.Add("In Progress", count);
+            count = model.myIncidents.Count(x => x.Status == "Waiting for approval");
+            model.statusCount.Add("Waiting for approval", count);
+            count = model.myIncidents.Count(x => x.Status == "Done");
+            model.statusCount.Add("Done", count);
+
+            count = model.myIncidents.Count(x => x.DepartmentAssigned == "Hardware");
+            model.depassignedCount.Add("Hardware", count);
+            count = model.myIncidents.Count(x => x.DepartmentAssigned == "Software");
+            model.depassignedCount.Add("Software", count);
+            count = model.myIncidents.Count(x => x.DepartmentAssigned == "Finances");
+            model.depassignedCount.Add("Finances", count);
             // var users=db.Requests.Where(m=>m.createdBy==companyUsers)
             //var requests = db.Requests.Where()
             // return View(await requests.ToListAsync());
-            return View(myIncidentRequestViewModel);
+            return View(model);
         }
+        
+        //[Route("Administrator/{url}")]
+        //public ActionResult Index(myFilteredIncidentRequestViewModel model) { 
 
-        // GET: Administrator/Details/5
-        public ActionResult Details(int id)
+        //    return null;
+        
+        //}
+
+            // GET: Administrator/Details/5
+            public ActionResult Details(int id)
         {
             return View();
         }

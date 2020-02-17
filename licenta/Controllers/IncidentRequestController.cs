@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using licenta.DatabaseConnection;
 using licenta.Models;
+using System.IO;
 
 namespace licenta.Controllers
 {
@@ -44,6 +45,7 @@ namespace licenta.Controllers
             IncidentRequestViewModel model = new IncidentRequestViewModel();
             using (TehnicalDepartmentDb db = new TehnicalDepartmentDb())
             {
+                
                 List<Department> departments = db.Departments.ToList();
                 foreach (var d in departments)
                 {
@@ -67,8 +69,44 @@ namespace licenta.Controllers
             {
                 using (TehnicalDepartmentDb db = new TehnicalDepartmentDb())
                 {
+                   
                     string CreatedByName = User.Identity.Name;
                     int CreatedById = db.Users.FirstOrDefault(u => u.username == CreatedByName).userId;
+                    int? fileval=null;
+                    DatabaseConnection.File fileDb = null;
+                    if (model.file != null && model.file.ContentLength > 0)
+                        try
+                        {
+
+
+                            string path = Path.Combine(Server.MapPath("~/Files"),
+                                      Path.GetFileName(model.file.FileName));
+                            model.file.SaveAs(path);
+
+                            fileDb = new DatabaseConnection.File
+                            {
+                                fileName = model.file.FileName,
+                                fileType=model.file.ContentType
+                            };
+
+
+                            db.Files.Add(fileDb);
+                            await db.SaveChangesAsync();
+                            fileval= fileDb.fileId;
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                        }
+                    else
+                    {
+                        ViewBag.Message = "You have not specified a file.";
+                        fileval = null;
+                    }
+
+                   
+
+
                     Request request = new Request
                     {
                         createdBy = CreatedById,
@@ -76,8 +114,10 @@ namespace licenta.Controllers
                         description = model.description,
                         type = model.type == "0" ? false : true,
                         departmentAssigned = model.departmentAssigned,
+                        fileId= fileval,
                         employeeAssigned = null,
-                        priority = model.priority
+                        priority = model.priority,
+                        
                     };
                     db.Requests.Add(request);
                     await db.SaveChangesAsync();
@@ -107,6 +147,9 @@ namespace licenta.Controllers
             // ViewBag.createdBy = new SelectList(db.Users, "userId", "company", request.createdBy);
             return View(model);
         }
+
+
+
 
         // GET: IncidentRequest/Edit/5
         public async Task<ActionResult> Edit(int? id)
@@ -176,6 +219,10 @@ namespace licenta.Controllers
             base.Dispose(disposing);
         }
 
+        public PartialViewResult _Support()
+        {
+            return PartialView();
+        }
         public ActionResult Support()
         {
 

@@ -1,0 +1,53 @@
+﻿@model licenta.Models.ModalPartialDoneViewModel
+
+
+
+<div style="position:relative; top: 30%; left: 30%;">
+
+    @using (Html.BeginForm("ModalPartialDone", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModal-label">Send</h4>
+                        <div>
+
+                            <div class="modal-body">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                @Html.HiddenFor(x => x.Id, Model.Id)
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            <label for="file">Upload File:</label>
+                                            <input type="file" name="file" id="file" />
+                                        </div>
+                                    </div>
+
+                                <div class="modal-footer">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Send" class="btn btn-success" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        }
+</div>
+

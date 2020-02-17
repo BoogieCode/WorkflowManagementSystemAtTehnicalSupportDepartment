@@ -2,66 +2,153 @@
 @{
     ViewBag.Title = "History";
 }
+    <div>
+        <h3>
+            <b>Type: </b>@Model.type
+        </h3>
 
-<h6>History</h6>
-<p>@Model.type</p>
-<h6>Title</h6>
-<p>@Model.title</p>
-<h6>Description</h6>
-<p>@Model.description</p>
-<h6>Priority</h6>
-<p>@Model.priority</p>
-<br />
+        <h3>
+            <b>Title: </b>@Model.title
+        </h3>
+
+        <h3>
+            <b>Description: </b>@Model.description
+        </h3>
+
+        <h3>
+            <b>Priority: </b>@Model.priority
+        </h3>
+
+        @{ if (Model.download != null)
+            {
+                <table>
+                    <tr>
+                        <td>
+                            <img src="~/Images/attached.png" width="30" height="40" style="margin-right:1em"/>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Download attached file", "Download", new { id = Model.download })
+                            
+                        </td>
+
+                        
+                    </tr>
+                </table>
+                } 
+            }
+                
+    </div>
+    
+
+<hr />
+<h4><b>History: </b></h4>
 <div>
     <style>
-        
-        table, th, td {
+
+        /*table, th, td {
             border: 1px solid black;
-        }
+        }*/
     </style>
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">from</th>
-            <th>to</th>
-            <th>data</th>
-            <th>status</th>
-            <th>send back to</th>
-        </tr>
-    </thead>
-    <tbody>
-        @{ foreach (var req in Model.histories)
-            {
-                <tr>
-                    <td>
-                        @req.from
-                    </td>
-                    <td>
-                        @req.to
-                    </td>
-                    <td>
-                        @req.data
-                    </td>
-                    <td>
-                        @req.status
-                    </td>
-                    <td>
-                        @req.approvaltype
-                    </td>
-                  
-                </tr>
-                <tr>
-                    <th>MESSAGE</th>
-                    <td>
 
-                        @req.message
-                        <hr />
-                    </td>
-                </tr>
-               
-            }
-        }
-    </tbody>
+    @{ foreach (var req in Model.histories)
+        { <table class="table" border="1">
+                <thead class="thead-dark">
+                    <tr>
 
-</table>
-    </div>
+                        <td>Workflow</td>
+                        <td>Data</td>
+                        <td>Status</td>
+                        <td>Attachments</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            from: <b>@req.from</b>
+                        </td>
+
+                        <td rowspan="2" style="vertical-align : middle;text-align:center; height:100px;width:100px">
+                            <b>@req.data</b>
+
+                        </td>
+                        <td rowspan="2" style="vertical-align : middle;text-align:center; height:100px;width:250px">
+                            <b>
+                                @req.status
+                                @if (req.approvaltype != "-")
+                                {
+                                    <br />
+                                    @req.approvaltype
+                                }
+                            </b>
+                        </td>
+                        <td rowspan="2" style="vertical-align : middle;text-align:center; height:50px;width:50px">
+                            @if (req.attachmentsId != null) {
+                            @Html.ActionLink("Download", "Download", new { id = req.attachmentsId })
+                            }
+                            else
+                            {
+                             <p>-</p>
+                            }
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            to:  <b>@req.to</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        @if (req.message != null)
+                        {
+                            <td colspan="4" style="vertical-align : middle;text-align:center;">
+
+                                Message<br />
+                                <b>@req.message</b>
+
+                            </td>
+                        }
+                    </tr>
+                    @*<tr>
+                            <th>MESSAGE</th>
+                            <td>
+
+                                @req.message
+                                <hr />
+                            </td>
+                        </tr>*@
+                    @*@if (req.message != null)
+                        {
+                        <tr>
+                            <td>
+                                @req.message
+                            </td>
+                        </tr>
+
+
+
+                        }*@
+
+
+                </tbody>
+
+            </table>}
+        <br />
+    }
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+
+    @*$("#download").click(function (e) {
+        
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Download", "Home")',
+            data: { id: @Model.download },
+            success:"good",
+            error: "errorFunc"
+        });
+    });*@
+
+</script>

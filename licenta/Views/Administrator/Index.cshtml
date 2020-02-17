@@ -1,4 +1,91 @@
-﻿@model List<licenta.Models.myIncidentRequestViewModel>
+﻿@model licenta.Models.myFilteredIncidentRequestViewModel
+<h1>Administrator</h1>
+<hr />
+@Html.Partial("_AdminCharts", Model)
+<hr />
+
+<p>
+
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Filters
+    </a>
+    <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            @using (Html.BeginForm("Index", "Administrator", FormMethod.Get))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <table class="table">
+                            <tr>
+                                <td><b>Types</b></td>
+                                <td>
+                                    Incident
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedType[0], Model.fm.isCheckedType[0])
+                                </td>
+                                <td>
+                                    Request
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedType[1], Model.fm.isCheckedType[1])
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Status</b></td>
+                                <td>
+                                    Pending
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedStatus[0], Model.fm.isCheckedStatus[0])
+                                </td>
+                                <td>
+                                    In Progress
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedStatus[1], Model.fm.isCheckedStatus[1])
+                                </td>
+                                <td>
+                                    Waiting for approval
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedStatus[2], Model.fm.isCheckedStatus[2])
+                                </td>
+                                <td>
+                                    Done
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedStatus[3], Model.fm.isCheckedStatus[3])
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>Department</b></td>
+                                <td>
+                                    Hardware
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedCategory[0], Model.fm.isCheckedCategory[0])
+                                </td>
+                                <td>
+                                    Software
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedCategory[1], Model.fm.isCheckedCategory[1])
+                                </td>
+                                <td>
+                                    Finances
+                                    @Html.CheckBoxFor(m => m.fm.isCheckedCategory[2], Model.fm.isCheckedCategory[2])
+                                </td>
+                            </tr>
+                        </table>
+
+                        @Html.DropDownListFor(
+                        m => m.orderVal,
+                        new SelectList(Model.orderedBy, "Value", "Key"))
 
 
-@Html.Partial("_RequestIncidentList",Model);
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="GO" class="btn btn-primary" />
+                    </div>
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+
+
+
+    @Html.Partial("_RequestIncidentList", Model)

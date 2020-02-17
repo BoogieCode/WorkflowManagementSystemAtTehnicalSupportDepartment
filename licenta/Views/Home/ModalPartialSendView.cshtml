@@ -3,11 +3,11 @@
 
 
 <div style="position:relative;
-  top: 30%;
-  left: 30%;
+  top: 3%;
+  left: 35%;
  ">
 
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("ModalPartialSendView","Home", FormMethod.Post, new { enctype="multipart/form-data"}))
     {
         @Html.AntiForgeryToken()
         <div class="row">
@@ -22,7 +22,7 @@
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
                                 @Html.HiddenFor(x => x.ID, Model.ID)
-                                <p><b>Approval request</b></p>
+                                <p><b>Select department</b></p>
                                 <div class="form-group">
                                     @Html.DropDownListFor(m => m.Category, Model.departmentsList, new { @class = "form-control" })
                                 </div>
@@ -31,39 +31,50 @@
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                        @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.TextAreaFor(model => model.Message, new { rows = "9", cols = "200", @class = "text-area" })
 
                                     </div>
 
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.file, htmlAttributes: new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            <label for="file">Upload File:</label>
+                                            <input type="file" name="file" id="file" />
+                                        </div>
+                                    </div>
 
                                 </div>
                                 @if (Model.modalType == 0)
                                 {
                                     <p><b>Approval request</b></p>
                                     <div class="form-group">
-                                        @Html.DropDownListFor(m => m.NeedsApproval, Model.Approval, "Approval request", new { @class = "form-control", @onchange = "ShowDep()" })
-                                    </div>
+                                        <div class="col-md-10">
 
-                                    <div class="form-group" id="depDropdown">
-                                        @Html.DropDownListFor(m => m.ApprovalType, Model.ApprovalTypeList, "-", new { @class = "form-control" })
-                                    </div>
-                                }
-                                @if (Model.modalType == 2)
-                                {
-                                    
-                                    Model.NeedsApproval = ViewBag.to;
-                                    
-                                    @Html.HiddenFor(x => x.NeedsApproval)
-                                    <p>Request will be send back to @ViewBag.to</p>
-                                }
-                                <div class="modal-footer">
-                                    <div class="form-group">
-                                        <div class="col-md-offset-2 col-md-10">
-                                            <input type="submit" value="Send" class="btn btn-success" />
+                                            @Html.DropDownListFor(m => m.NeedsApproval, Model.Approval, "Approval request", new { @class = "form-control", @onchange = "ShowDep()" })
+                                        </div>
+                                        </div>
+
+                                        <div class="form-group" id="depDropdown">
+                                            @Html.DropDownListFor(m => m.ApprovalType, Model.ApprovalTypeList, "-", new { @class = "form-control" })
+                                        </div>
+                                        }
+                                        @if (Model.modalType == 2)
+                                        {
+
+                                            Model.NeedsApproval = ViewBag.to;
+
+                                            @Html.HiddenFor(x => x.NeedsApproval)
+                                            <p>Request will be send back to @ViewBag.to</p>
+                                        }
+                                        <div class="modal-footer">
+                                            <div class="form-group">
+                                                <div class="col-md-offset-2 col-md-10">
+                                                    <input type="submit" value="Send" class="btn btn-success" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
