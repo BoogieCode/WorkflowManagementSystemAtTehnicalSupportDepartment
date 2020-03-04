@@ -16,9 +16,9 @@ namespace licenta.Controllers
         private readonly ICustomEmailService _emailService;
         private readonly TehnicalDepartmentDb db = new TehnicalDepartmentDb();
 
-        public HomeController(ICustomEmailService emailService)
+        public HomeController()//ICustomEmailService emailService)
         {
-            _emailService = emailService;
+          //  _emailService = emailService;
         }
 
         public ActionResult Index()
@@ -571,13 +571,13 @@ namespace licenta.Controllers
                 Id = userid
             };
 
-            _emailService.SendEmail(new EmailMessage()
-            {
-                body = "this is a test",
-                recieverAddress = "vali.scoican@yahoo.com",
-                recieverName = "Vali Scoican",
-                subject = "test email"
-            });
+            //_emailService.SendEmail(new EmailMessage()
+            //{
+            //    body = "this is a test",
+            //    recieverAddress = "vali.scoican@yahoo.com",
+            //    recieverName = "Vali Scoican",
+            //    subject = "test email"
+            //});
 
 
             return View(model);
@@ -641,13 +641,13 @@ namespace licenta.Controllers
             db.RequestHistories.Add(lastRequest);
             db.SaveChanges();
 
-            _emailService.SendEmail(new EmailMessage()
-            {
-                body = "this is a test",
-                recieverAddress = "tereanubogdan@yahoo.com",
-                recieverName = "Bogdan Tereanu",
-                subject = "test email"
-            });
+            //_emailService.SendEmail(new EmailMessage()
+            //{
+            //    body = "this is a test",
+            //    recieverAddress = "tereanubogdan@yahoo.com",
+            //    recieverName = "Bogdan Tereanu",
+            //    subject = "test email"
+            //});
 
             return RedirectToAction("Dashboard");
         }
@@ -773,7 +773,7 @@ namespace licenta.Controllers
 
             db.SaveChanges();
 
-            int? f=null;
+            //int? f= fileDb.fileId;
             RequestHistory newrequestHistory = new RequestHistory
             {
                 requestId = model.ID,
@@ -783,10 +783,15 @@ namespace licenta.Controllers
                 message = model.Message,
                 approval = approvalMessage,
                 status = statusState,
-                attachmentsId = fileDb.fileId
 
             };
-
+            try
+            {
+                newrequestHistory.attachmentsId = fileDb.fileId;
+            }catch(Exception e)
+            {
+                Console.WriteLine("Nothing attacheed");
+            }
             db.RequestHistories.Add(newrequestHistory);
             db.SaveChanges();
 
