@@ -269,6 +269,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ChangeUsernameViewModel.cs" />
     <Compile Include="Models\CompanyUsersRegisterViewModel.cs" />
     <Compile Include="Models\CompanyUserViewModel.cs" />
     <Compile Include="Models\EmailMessage.cs" />
@@ -301,8 +302,12 @@
     <Content Include="Images\Administrator.png" />
     <Content Include="Images\attached.png" />
     <Content Include="Images\avatar.png" />
+    <Content Include="Images\createUser.png" />
     <Content Include="Images\Dashbaord.png" />
     <Content Include="Images\iconIdea.png" />
+    <Content Include="Images\incidentRequest.png" />
+    <Content Include="Images\itsmRegister.png" />
+    <Content Include="Images\manage.png" />
     <Content Include="Images\myincidents.png" />
     <Content Include="Images\rounduserlogo.png" />
     <Content Include="Images\serviceRequest.png" />
@@ -382,6 +387,7 @@
     <Content Include="Views\IncidentRequest\_Support.cshtml" />
     <Content Include="Views\Home\ModalPartialDone.cshtml" />
     <Content Include="smtpSettings.json" />
+    <Content Include="Views\Manage\ChangeUsername.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

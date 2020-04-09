@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using licenta.Models;
+using licenta.DatabaseConnection;
 
 namespace licenta.Controllers
 {
@@ -50,29 +51,17 @@ namespace licenta.Controllers
             }
         }
 
+        private TehnicalDepartmentDb db = new TehnicalDepartmentDb();
+        static string CompanyName;
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public ActionResult Index(ManageMessageId? message)
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
 
-            var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
-            {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-            };
-            return View(model);
+            CompanyName= Request.Cookies["companyCookie"].Value;
+            User user = db.Users.Where(u => u.username == User.Identity.Name && u.company == CompanyName).FirstOrDefault();
+            
+            return View(user);
         }
 
         //
@@ -333,7 +322,35 @@ namespace licenta.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        public ActionResult ChangeUsername()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangeUsername(ChangeUsernameViewModel model)
+        {
+            try
+            {
+                CompanyName = Request.Cookies["companyCookie"].Value;
+                User user = db.Users.Where(u => u.username == User.Identity.Name && u.company == CompanyName).FirstOrDefault();
+                user.username = model.newUsername;
+                db.SaveChanges();
+                AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                ViewBag.ChangePassword = "SuccesfullyChanged";
+                return RedirectToAction("Index", "Home");
+            }catch(Exception e)
+            {
+                ViewBag.ChangePassword = "Something's wrong";
+                return RedirectToAction("Index", "Home");
+            }
+        }
+        public ActionResult RaportAProblem()
+        {
+            return View();
+        }
+
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

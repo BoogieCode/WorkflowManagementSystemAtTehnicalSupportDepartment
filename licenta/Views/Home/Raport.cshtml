@@ -19,8 +19,7 @@
             ]);
 
             var options = {
-                title: 'Incident/Request',
-                pieHole: 0.4,
+                pieHole: 0.2,
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
@@ -41,11 +40,10 @@
             ]);
 
             var options = {
-                title: 'Status',
-                pieHole: 0.4,
+                pieHole: 0.2,
             };
 
-              var chart = new google.visualization.PieChart(document.getElementById('xxl'));
+            var chart = new google.visualization.PieChart(document.getElementById('xxl'));
             chart.draw(data, options);
 
 
@@ -67,8 +65,7 @@
             ]);
 
                     var options = {
-                title: 'Departments',
-                pieHole: 0.4,
+                pieHole: 0.2,
             };
                     var chart = new google.visualization.PieChart(document.getElementById('try3'));
                     chart.draw(data, options);
@@ -136,19 +133,25 @@
                                         Finances
                                         @Html.CheckBoxFor(m => m.fm.isCheckedCategory[2], Model.fm.isCheckedCategory[2])
                                     </td>
+
+                                </tr>
+                                <tr>
+                                    <td><b>Order</b></td>
+
+                                    <td>
+                                        @Html.DropDownListFor(
+                                                                      m => m.orderVal,
+                                                                      new SelectList(Model.orderedBy, "Value", "Key"), new { @class = "form-control" })
+                                    </td>
                                 </tr>
                             </table>
 
-                            @Html.DropDownListFor(
-                            m => m.orderVal,
-                            new SelectList(Model.orderedBy, "Value", "Key"))
-
-
                         </div>
                     </div>
+                    <br />
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="GO" class="btn btn-primary" />
+                            <input type="submit" value="Submit" class="btn btn-primary" />
                         </div>
                     </div>
 
@@ -159,62 +162,65 @@
         </div>
 
 
+    <p>Overall informations</p>
 
+    <table width="100%" style="border-collapse: separate; border-spacing: 10px;">
+        <tr>
+            <td align="center" style="background-color:steelblue; color:white;">
+                <h2><b> &nbsp;Incidents created: @Model.incidentrequestCount["Incident"]&nbsp;</b></h2>
+            </td>
 
+            <td align="center" style="background:goldenrod; color:white;">
+                <h2><b> &nbsp;Requests created: @Model.incidentrequestCount["Request"]&nbsp;</b></h2>
+            </td>
 
+            <td align="center" style="background-color:green; color:white;">
+                <h2><b> &nbsp;Done: @Model.statusCount["Done"]&nbsp;</b></h2>
+            </td>
 
+            <td align="center" style="background-color:orangered; color:white;">
+                <h2>
+                    <b>
+                        &nbsp;On working: @(Model.statusCount["Pending"] +
+Model.statusCount["In Progress"] +
+Model.statusCount["Waiting for approval"])
+                        &nbsp;
+                    </b>
+                </h2>
+            </td>
 
+        </tr>
+    </table>
 
-        <table>
-            <tr>
-                <td>
-                    <table border="1">
-                        <tr>
-                            <td>
-                                <h2> &nbsp;Incidents created:  &nbsp;@Model.incidentrequestCount["Incident"]&nbsp;</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h2> &nbsp;Requests created: @Model.incidentrequestCount["Request"]&nbsp;</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h2> &nbsp;Done: @Model.statusCount["Done"]</h2>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h2>
-                                    &nbsp;On working: @(Model.statusCount["Pending"] +
-  Model.statusCount["In Progress"] +
-    Model.statusCount["Waiting for approval"])
-                                </h2>
-                            </td>
+    <br />
+    <p>Charts</p>
 
-                        </tr>
-                    </table>
-                </td>
-                    @Html.ActionLink("Download Raport", "DownloadRaport",new { filter=Model})
-                <td>
-                    <div id="donutchart" style="width: 400px; height: 400px;"></div>
-                </td>
+    <table border="1" align="center">
+       <tr>
+           <td align="center"><b>Incidents/Requests</b></td>
+           <td align="center"><b>Status</b></td>
+           <td align="center"><b>Departments</b></td>  
+       </tr>
+        <tr>
 
-            </tr>
-            <tr>
+            <td>
+                <div id="donutchart" style="width: 380px; height: 350px;"></div>
+            </td>
 
-                <td>
-                </td>
-                <td>
-                    <div id="xxl" style="width: 400px; height: 400px;"></div>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <div id="try3" style="width: 400px; height: 400px;"></div>
-                </td>
-            </tr>
-        </table>
+      
+       
+            <td>
+                <div id="xxl" style="width: 380px; height: 350px;"></div>
+            </td>
+    
+            <td>
+                <div id="try3" style="width: 380px; height: 350px;"></div>
+            </td>
+        </tr>
+    </table>
 </body>
+<div style="text-align:center">
+    <h1>
+        <b>@Html.ActionLink("Download Raport", "DownloadRaport", new { filter = Model })</b>
+    </h1>
+</div>
