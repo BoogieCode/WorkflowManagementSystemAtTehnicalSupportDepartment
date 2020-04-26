@@ -8,6 +8,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using licenta.Models;
 using licenta.DatabaseConnection;
+using System.Collections.Generic;
+using System.Net.Mail;
+using System.Net;
+using licenta.Services;
 
 namespace licenta.Controllers
 {
@@ -327,6 +331,7 @@ namespace licenta.Controllers
             return View();
         }
 
+     
         [HttpPost]
         public ActionResult ChangeUsername(ChangeUsernameViewModel model)
         {
@@ -345,8 +350,64 @@ namespace licenta.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+        public ActionResult Delete()
+        {
+            User user = db.Users.Where(u => u.username == User.Identity.Name && u.company == CompanyName).FirstOrDefault();
+            if (user.type == 0)
+            {
+                List<User> users = db.Users.Where(u => u.company == CompanyName).ToList();
+                foreach (var u in users)
+                {
+                    db.Users.Remove(u);
+                }
+                db.SaveChanges();
+            }
+            else
+            {
+                db.Users.Remove(user);
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult RaportAProblem()
         {
+            return View();
+        }
+
+
+
+
+        [HttpPost]
+        public ActionResult RaportAProblem(string problem)
+        {
+            try
+            {
+                User user = db.Users.Where(u => u.username == User.Identity.Name && u.company == CompanyName).FirstOrDefault();
+                User admin = db.Users.Where(u => u.type == 0 && u.company == CompanyName).FirstOrDefault();
+
+                CustomEmailService custom = new CustomEmailService();
+
+                    string sub = "Problem raported";
+                    string body = "Hello "+admin.username+"\n"+user.username+" raported a problem. You have the informations below \n"+problem;
+
+                EmailMessage mess = new EmailMessage()
+                {
+                    recieverAddress = "tereanubogdan@yahoo.com",
+                    recieverName = "Boo",
+                    subject = sub,
+                    body = body
+                };
+                    {
+                      custom.SendEmail(mess);
+                    }
+                    return RedirectToAction("Index");
+                }
+            catch (Exception e)
+            {
+                ViewBag.Error = "Some Error "+e.Message;
+            }
+
             return View();
         }
 

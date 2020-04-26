@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "RaportAProblem";
+}
+
+<h2>Raport Problem</h2>
+@using (Html.BeginForm("RaportAProblem", "Manage", FormMethod.Post))
+{
+    @Html.TextArea("problem", null, new { @class = "form-control" })
+
+    <div class="control-group">
+        <div class="controls">
+            <input type="submit" class="btn" value="Send" />
+        </div>
+    </div>
+
+}

@@ -388,6 +388,7 @@
     <Content Include="Views\Home\ModalPartialDone.cshtml" />
     <Content Include="smtpSettings.json" />
     <Content Include="Views\Manage\ChangeUsername.cshtml" />
+    <Content Include="Views\Manage\RaportAProblem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
